@@ -70,7 +70,8 @@ const Navbar = ({ setQuery, onLogout }) => {
             subItems: [
                 { title: "Find a Lawyer", path: "/find-lawyer", icon: <FaBalanceScale className="mr-2" /> },
                 { title: "Legal Documents", path: "/legal-docs", icon: <FaFileAlt className="mr-2" /> },
-                { title: "Know Your Rights", path: "/rights", icon: <FaGavel className="mr-2" /> }
+                { title: "Know Your Rights", path: "/rights", icon: <FaGavel className="mr-2" /> },
+                { title: "Locator", path: "/lawyerlocator", icon: <FaBalanceScale className="mr-2" /> },
             ]
         },
         {

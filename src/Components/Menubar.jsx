@@ -1,5 +1,6 @@
 // src/Components/Sidebar.jsx
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const Menubar = () => {
   return (
@@ -16,11 +17,13 @@ const Menubar = () => {
             <a href="#" className="block p-2 rounded hover:bg-gray-700">My Cases</a>
           </li>
           <li className="mb-3">
-            <a href="#" className="block p-2 rounded hover:bg-gray-700">Find a Lawyer</a>
+            <Link to="/lawyerlocator" className="block p-2 rounded hover:bg-gray-700">Locator</Link>
           </li>
+
           <li className="mb-3">
             <a href="#" className="block p-2 rounded hover:bg-gray-700">Settings</a>
           </li>
+          
         </ul>
         
       </nav>
