@@ -11,6 +11,7 @@ import Dashboard from './Pages/Dashboard';
 import More from './Pages/More'; 
 import MobileMenu from './Components/MobileMenu';
 import CategoryCarousel from './Components/CategoryCarousel';
+import TopLawCollegesPage from './Pages/lawcolleges';
 
 function App() {
   const { user } = useAuth();
@@ -29,6 +30,7 @@ function App() {
           <Route path="/category" element={<CategoryCarousel />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
+          <Route path="/top-law-colleges" element={<TopLawCollegesPage />} />
         </Routes>
       </BrowserRouter>
    
