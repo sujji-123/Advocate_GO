@@ -1,59 +1,171 @@
-import React from 'react'
-import Navbar from '../Components/Navbar'
-import Menubar from '../Components/Menubar';
-import bgImage from '../assets/blur.jpg';
-import { Link } from 'react-router-dom';
+import HeroSection from '../Components/HeroSection';
+import CategoryCarousel from '../Components/CategoryCarousel';
+import WhyChooseUs from '../Components/WhyChooseUs';
+import ProfileCarousel from '../Components/ProfileCarousel';
+import FAQSection from '../Components/FAQSection';
+import LocationTracker from '../Components/LocationTracker';
+import Testimonials from '../Components/Testimonials';
+import Footer from '../Components/Footer';
+import Navbar from '../Components/Navbar';
 
+// Using random user API for profile images
+const lawyers = [
+  {
+    id: 1,
+    name: "Adv. Meera Krishnan",
+    specialty: "Corporate Law",
+    rating: 5,
+    reviews: 128,
+    image: "https://randomuser.me/api/portraits/women/65.jpg",
+  },
+  {
+    id: 2,
+    name: "Adv. Rohan Malhotra",
+    specialty: "Criminal Defense",
+    rating: 5,
+    reviews: 96,
+    image: "https://randomuser.me/api/portraits/men/75.jpg",
+  },
+  {
+    id: 3,
+    name: "Adv. Sunita Rao",
+    specialty: "Family Law",
+    rating: 4,
+    reviews: 87,
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+  },
+  {
+    id: 4,
+    name: "Adv. Vikram Joshi",
+    specialty: "Intellectual Property",
+    rating: 4,
+    reviews: 72,
+    image: "https://randomuser.me/api/portraits/men/68.jpg",
+  },
+  {
+    id: 5,
+    name: "Adv. Priyanka Sharma",
+    specialty: "Labor Law",
+    rating: 4,
+    reviews: 65,
+    image: "https://randomuser.me/api/portraits/women/33.jpg",
+  },
+];
+
+const students = [
+  {
+    id: 1,
+    name: "Ananya Gupta",
+    specialty: "NALSAR University",
+    rating: 5,
+    reviews: 42,
+    image: "https://randomuser.me/api/portraits/women/22.jpg",
+  },
+  {
+    id: 2,
+    name: "Rahul Deshpande",
+    specialty: "NLU Delhi",
+    rating: 5,
+    reviews: 38,
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
+  },
+  {
+    id: 3,
+    name: "Neha Reddy",
+    specialty: "NLSIU Bangalore",
+    rating: 4,
+    reviews: 31,
+    image: "https://randomuser.me/api/portraits/women/55.jpg",
+  },
+  {
+    id: 4,
+    name: "Arjun Patel",
+    specialty: "WBNUJS Kolkata",
+    rating: 4,
+    reviews: 27,
+    image: "https://randomuser.me/api/portraits/men/45.jpg",
+  },
+  {
+    id: 5,
+    name: "Sanya Verma",
+    specialty: "GNLU Gandhinagar",
+    rating: 4,
+    reviews: 23,
+    image: "https://randomuser.me/api/portraits/women/77.jpg",
+  },
+];
+
+const advisors = [
+  {
+    id: 1,
+    name: "Prof. Rajan Menon",
+    specialty: "Constitutional Law Expert",
+    rating: 5,
+    reviews: 56,
+    image: "https://randomuser.me/api/portraits/men/60.jpg",
+  },
+  {
+    id: 2,
+    name: "Dr. Sunita Iyer",
+    specialty: "Human Rights Specialist",
+    rating: 5,
+    reviews: 48,
+    image: "https://randomuser.me/api/portraits/women/50.jpg",
+  },
+  {
+    id: 3,
+    name: "Adv. Harish Khanna (Retd.)",
+    specialty: "Former High Court Judge",
+    rating: 5,
+    reviews: 39,
+    image: "https://randomuser.me/api/portraits/men/70.jpg",
+  },
+  {
+    id: 4,
+    name: "Dr. Priya Nair",
+    specialty: "International Law",
+    rating: 4,
+    reviews: 34,
+    image: "https://randomuser.me/api/portraits/women/40.jpg",
+  },
+  {
+    id: 5,
+    name: "Adv. Sameer Kapoor",
+    specialty: "Corporate Law Consultant",
+    rating: 4,
+    reviews: 29,
+    image: "https://randomuser.me/api/portraits/men/50.jpg",
+  },
+];
 
 const Home = () => {
   return (
-    <div className='min-h-screen flex flex-col bg-black ml-2 cursor-pointer'>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-
-      <div className="flex flex-grow mt-6 mb-3">
-        <Menubar />
-
-        
-        <main
-          className="flex-grow ml-4 mb-2 flex flex-col text-center mt-1"
-          style={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'left top',
-            backgroundSize: 'cover', 
-        }}
-      >
-          <div className="text-left text-white p-8">
-            <h1 className='text-4xl font-bold mb-4'>Welcome to AdvocateGO!</h1>
-            <p className='text-lg'>Your one-step solution for legal assistance.</p>
-            <p className='text-lg'>Don’t know where to start with a legal issue?</p>
-            <p>
-                AdvocateGO helps you understand your rights and find the right lawyer easily.
-            </p>
-            <p>
-                 Diagnose your issue in simple steps
-            </p>
-            <p>
-                 Get help in Telugu or English or your regional language, even by voice
-            </p>
-            <p>
-                Find local lawyers by type and availability
-            </p>
-            <p>
-                 Check if you're eligible for free legal aid
-            </p>
-            <p>
-                 Search for lawyers by name or location
-            </p>
-            <p className='mb-4'>
-                 Ask legal questions anonymously — safely & privately
-            </p>
-            <Link to="/more" type='button' className="bg-gray-600 hover:bg-black text-white font-semibold py-2 px-4 rounded mb-2 items-center justify-center mt-4"> Learn More</Link>
-          </div>
-        </main>
-      </div>
+      <HeroSection />
+      <CategoryCarousel />
+      <WhyChooseUs />
+      <ProfileCarousel 
+        title="Meet Our Top Lawyers"
+        profiles={lawyers}
+        profileType="lawyers"
+      />
+      <ProfileCarousel 
+        title="Connect with Law Students"
+        profiles={students}
+        profileType="students"
+      />
+      <ProfileCarousel 
+        title="Our Expert Advisors"
+        profiles={advisors}
+        profileType="advisors"
+      />
+      <FAQSection />
+      <LocationTracker />
+      <Testimonials />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default Home;

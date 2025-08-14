@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* === START: Google Translate Widget Styles === */
+
+/* This styles the main container in the navbar */
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* This styles the text inside the navbar widget */
+.goog-te-gadget-simple span {
+  color: #ffffff !important; /* White text */
+  font-weight: 500;
+}
+
+/* This targets the main popup frame that appears on click */
+.goog-te-menu-frame {
+  max-width: 220px !important;    /* Limits the width of the popup */
+  max-height: 300px !important;   /* Sets a maximum height */
+  overflow-y: auto !important;    /* Makes the list SCROLLABLE if it exceeds the height */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  border-radius: 0.5rem !important; /* Rounded corners */
+}
+
+/* This targets each language item in the list */
+.goog-te-menu-value {
+  display: block !important; /* Forces each language onto its own line (single column) */
+  width: 100%;             /* Ensures each item takes the full width */
+  padding: 0.75rem 1rem !important; /* Adds some padding */
+  font-size: 0.875rem !important;
+  color: #374151 !important; /* Dark text for readability */
+}
+
+/* This adds a hover effect for better UX */
+.goog-te-menu-value:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Hides the "Powered by Google" text to save space */
+td > .goog-te-menu-value > div {
+  display: none !important;
+}
+
+/* === END: Google Translate Widget Styles === */
