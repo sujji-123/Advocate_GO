@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from '../contextprovider/AuthContext';
 import { FaBars, FaSearch, FaTimes, FaChevronDown, FaUser, FaBook, FaBalanceScale, FaGavel, FaQuestionCircle, FaFileAlt } from 'react-icons/fa';
 import GoogleTranslate from './GoogleTranslate'; // Import the new component
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const WelcomeBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -68,7 +69,8 @@ const Navbar = ({ setQuery, onLogout }) => {
             title: "Legal Resources",
             icon: <FaBook className="mr-2" />,
             subItems: [
-                { title: "Find a Lawyer", path: "/find-lawyer", icon: <FaBalanceScale className="mr-2" /> },
+                { title: "Find a Lawyer", path: "/lawyer-type-advisor", icon: <FaBalanceScale className="mr-2" /> }, // Updated path
+                { title: "Lawyer Locator", path: "/lawyer-locator", icon: <FaMapMarkerAlt className="mr-2" /> },
                 { title: "Legal Documents", path: "/legal-docs", icon: <FaFileAlt className="mr-2" /> },
                 { title: "Know Your Rights", path: "/rights", icon: <FaGavel className="mr-2" /> }
             ]
@@ -93,7 +95,7 @@ const Navbar = ({ setQuery, onLogout }) => {
         <>
             <WelcomeBanner />
 
-            <nav className='bg-gray-800 text-white'>
+            <nav className='bg-gray-800 text-white relative z-50'> {/* Added relative and higher z-index */}
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center">
@@ -119,7 +121,7 @@ const Navbar = ({ setQuery, onLogout }) => {
                                         {menu.title}
                                         <FaChevronDown className="ml-1 text-xs" />
                                     </button>
-                                    <div className={`absolute left-0 mt-2 w-56 bg-gray-700 rounded-md shadow-lg z-10 ${activeDropdown === menu.title ? 'block' : 'hidden'} group-hover:block`}>
+                                    <div className={`absolute left-0 mt-2 w-56 bg-gray-700 rounded-md shadow-lg z-50 ${activeDropdown === menu.title ? 'block' : 'hidden'} group-hover:block`}> {/* Increased z-index */}
                                         {menu.subItems.map((item) => (
                                             <Link
                                                 key={item.title}
@@ -144,7 +146,7 @@ const Navbar = ({ setQuery, onLogout }) => {
                                         Settings
                                         <FaChevronDown className="ml-1 text-xs" />
                                     </button>
-                                    <div className={`absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-10 ${activeDropdown === 'Settings' ? 'block' : 'hidden'} group-hover:block`}>
+                                    <div className={`absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-50 ${activeDropdown === 'Settings' ? 'block' : 'hidden'} group-hover:block`}> {/* Increased z-index */}
                                         {settingsItems.map((item) => (
                                             <Link
                                                 key={item.title}

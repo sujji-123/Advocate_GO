@@ -17,9 +17,32 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
     }
   };
 
+  // Function to generate empty profile placeholder based on gender
+  const getEmptyProfileImage = (gender, name) => {
+    const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
+    
+    if (gender === 'female') {
+      return (
+        <div className="w-full h-48 bg-pink-100 flex items-center justify-center">
+          <div className="w-32 h-32 rounded-full bg-pink-300 flex items-center justify-center">
+            <span className="text-pink-700 text-4xl font-bold">{initials}</span>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="w-full h-48 bg-blue-100 flex items-center justify-center">
+          <div className="w-32 h-32 rounded-full bg-blue-300 flex items-center justify-center">
+            <span className="text-blue-700 text-4xl font-bold">{initials}</span>
+          </div>
+        </div>
+      );
+    }
+  };
+
   return (
     <section className={`py-12 px-6 ${profileType === 'lawyers' ? 'bg-amber-100' : 'bg-gray-50'}`}>
-      <div className="max-w-6xl mx-auto bg-orange-800 mb-4">
+      <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
           {title}
         </h2>
@@ -33,11 +56,7 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
               {profiles.map((profile) => (
                 <div key={profile.id} className="w-full sm:w-1/2 md:w-1/4 px-4 flex-shrink-0 mb-4">
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition h-full">
-                    <img 
-                      src={profile.image} 
-                      alt={profile.name} 
-                      className="w-full h-48 object-cover"
-                    />
+                    {getEmptyProfileImage(profile.gender, profile.name)}
                     <div className="p-6">
                       <h3 className="text-xl font-semibold text-gray-800">{profile.name}</h3>
                       <p className="text-gray-600 text-sm mt-1">{profile.specialty}</p>

@@ -1,28 +1,30 @@
 // src/Pages/Dashboard.jsx
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contextprovider/AuthContext';
-import { FaBackward } from 'react-icons/fa';
 
 const Dashboard = () => {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
+    const { user } = useAuth();
 
-    return (
-        <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-            <div className='border shadow p-6 w-100 bg-white rounded-lg'>
-                <button className='bg-teal-600 text-white px-4 py-2 rounded flex items-center gap-2 mb-4' onClick={() => navigate('/')}>
-                    <FaBackward /><span>Go Home</span>
-                </button>
-                <h1 className='text-2xl font-bold mb-4 mt-4'>Welcome, {user?.name || user?.email || 'User'}!</h1>
-                <p className="mb-4">You are successfully logged in.</p>
-                <button className='bg-red-600 text-white px-4 py-2 rounded w-full' onClick={logout}>
-                    Logout
-                </button>
-            </div>
-        </div>
-    );
+    if (!user) {
+        // This shouldn't happen if routes in App.jsx are set up, but as a fallback
+        return <Navigate to="/login" />;
+    }
+
+    // This component now ONLY handles redirection
+    switch (user.role) {
+        case 'client':
+            return <Navigate to="/dashboard/client" replace />;
+        case 'lawyer':
+            return <Navigate to="/dashboard/lawyer" replace />;
+        case 'student':
+            return <Navigate to="/dashboard/student" replace />;
+        case 'advisor':
+            return <Navigate to="/dashboard/advisor" replace />;
+        default:
+            // Fallback for any unknown role
+            return <Navigate to="/" replace />;
+    }
 };
 
 export default Dashboard;

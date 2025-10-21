@@ -1,9 +1,9 @@
+// src/contextprovider/AuthContext.jsx
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
 
-// Re-use the same API client configuration
 const apiClient = axios.create({
   baseURL: 'http://localhost:8000/api/auth',
   withCredentials: true,
@@ -14,16 +14,15 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
 
   useEffect(() => {
-    // This effect runs on app startup to keep the user logged in
     if (token) {
-      // Set the token for all future apiClient requests
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      // Fetch user data if we have a token but no user object
       apiClient.get('/me').then(response => {
+        // --- MODIFICATION ---
+        // response.data.user now contains { id, name, email, role, specialization }
         setUser(response.data.user);
+        // --- END MODIFICATION ---
       }).catch(() => {
-        // If token is invalid, log out
         logout();
       });
     }
@@ -32,7 +31,10 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, userToken) => {
     localStorage.setItem('token', userToken);
     setToken(userToken);
+    // --- MODIFICATION ---
+    // userData now contains { id, name, email, role, specialization }
     setUser(userData);
+    // --- END MODIFICATION ---
   };
 
   const logout = () => {
@@ -40,7 +42,6 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     delete apiClient.defaults.headers.common['Authorization'];
-    // Optional: Call the backend logout to clear the cookie
     apiClient.post('/logout'); 
   };
 
@@ -51,7 +52,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to easily use the auth context
 export const useAuth = () => {
   return useContext(AuthContext);
 };
