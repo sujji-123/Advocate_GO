@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { useNavigate } from "react-router-dom";
 
 function LawyerTypeAdvisorPage() {
   const [query, setQuery] = useState("");
@@ -10,6 +11,8 @@ function LawyerTypeAdvisorPage() {
   const [activeTab, setActiveTab] = useState("text");
   const [advisors, setAdvisors] = useState([]);
   const [showEmergency, setShowEmergency] = useState(false);
+  const [showEducationHub, setShowEducationHub] = useState(false);
+  const navigate = useNavigate();
 
   const { listen, listening, stop } = useSpeechRecognition({
     onResult: (result) => {
@@ -125,6 +128,19 @@ function LawyerTypeAdvisorPage() {
         sections: ["Depends on your specific legal issue"],
         description: "A general practice lawyer can assess your situation and refer you to a specialist if needed."
       };
+    }
+  };
+
+  const toggleEducationHub = () => {
+    setShowEducationHub(!showEducationHub);
+    if (!showEducationHub) {
+      // Scroll to education hub when opening
+      setTimeout(() => {
+        document.getElementById("education-hub").scrollIntoView({ 
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 100);
     }
   };
 
@@ -366,7 +382,10 @@ function LawyerTypeAdvisorPage() {
               
               <div className="mt-6 pt-4 border-t border-amber-200">
                 <div className="flex flex-wrap gap-4">
-                  <button className="bg-[#5C4033] text-white px-6 py-2 rounded-lg hover:bg-[#4b3329] transition">
+                  <button 
+                    onClick={() => navigate('/nearby-lawyer-finder')}
+                    className="bg-[#5C4033] text-white px-6 py-2 rounded-lg hover:bg-[#4b3329] transition"
+                  >
                     Book a Lawyer
                   </button>
                   <button className="border border-[#5C4033] text-[#5C4033] px-6 py-2 rounded-lg hover:bg-[#5C4033]/10 transition">
@@ -458,44 +477,253 @@ function LawyerTypeAdvisorPage() {
             </div>
           </div>
           <div className="text-center mt-8">
-            <button className="bg-[#5C4033] text-white px-6 py-3 rounded-lg hover:bg-[#4b3329] transition">
-              Read More in Legal Education Hub
+            <button 
+              onClick={toggleEducationHub}
+              className="bg-[#5C4033] text-white px-6 py-3 rounded-lg hover:bg-[#4b3329] transition"
+            >
+              {showEducationHub ? "Close Legal Education Hub" : "Read More in Legal Education Hub"}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Enhanced Legal Education Hub Section */}
+      {showEducationHub && (
+        <div id="education-hub" className="py-12 px-4 bg-white border-t border-gray-200">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-[#5C4033] mb-4">Legal Education Hub</h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Your comprehensive guide to understanding Indian legal system, rights, and procedures. Empower yourself with legal knowledge.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              <div className="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                <div className="bg-amber-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-[#5C4033]">Fundamental Rights</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Right to Equality (Articles 14-18):</strong> Prohibits discrimination based on religion, race, caste, sex, or place of birth. Ensures equality before law and equal protection of laws.</p>
+                  <p><strong>Right to Freedom (Articles 19-22):</strong> Includes freedom of speech, assembly, association, movement, residence, and profession. Protects against arbitrary arrest and detention.</p>
+                  <p><strong>Right against Exploitation (Articles 23-24):</strong> Prohibits human trafficking, forced labor, and child labor in hazardous industries.</p>
+                  <p><strong>Right to Freedom of Religion (Articles 25-28):</strong> Guarantees freedom of conscience and free profession, practice, and propagation of religion.</p>
+                  <p><strong>Cultural and Educational Rights (Articles 29-30):</strong> Protects interests of minorities to conserve their culture and establish educational institutions.</p>
+                  <p><strong>Right to Constitutional Remedies (Article 32):</strong> The heart and soul of the Constitution - allows citizens to move Supreme Court for enforcement of fundamental rights.</p>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">Legal Procedures & Court System</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Hierarchy of Courts:</strong> Supreme Court (apex) → High Courts (state level) → District Courts → Lower Courts. Each has specific jurisdiction and powers.</p>
+                  <p><strong>Filing a Case:</strong> Requires proper jurisdiction, cause of action, and limitation period compliance. Civil suits have 3-year limitation generally.</p>
+                  <p><strong>Court Proceedings:</strong> Plaint filing → Summons issuance → Written statement → Evidence recording → Arguments → Judgment → Appeal.</p>
+                  <p><strong>Alternative Dispute Resolution:</strong> Mediation, arbitration, and conciliation offer faster, cost-effective resolution outside traditional courts.</p>
+                  <p><strong>Legal Documentation:</strong> Affidavits, power of attorney, contracts, and agreements must follow specific formats and stamp duty requirements.</p>
+                  <p><strong>Execution of Orders:</strong> Court decrees can be executed through attachment, sale, arrest, or appointment of receivers as per CPC provisions.</p>
+                </div>
+              </div>
+
+              <div className="bg-green-50 p-6 rounded-xl border border-green-200">
+                <div className="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-green-800">Important Indian Laws</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Indian Penal Code, 1860:</strong> Defines crimes and punishments. Covers offenses against state, public tranquility, human body, property, etc.</p>
+                  <p><strong>Code of Criminal Procedure, 1973:</strong> Lays down procedures for arrest, investigation, trial, bail, and appeals in criminal cases.</p>
+                  <p><strong>Code of Civil Procedure, 1908:</strong> Governs procedure for civil suits, appeals, execution of decrees, and miscellaneous proceedings.</p>
+                  <p><strong>Indian Evidence Act, 1872:</strong> Regulates evidence admissibility in judicial proceedings. Covers oral, documentary, and circumstantial evidence.</p>
+                  <p><strong>Indian Contract Act, 1872:</strong> Defines essential elements of valid contracts, performance, breach, and remedies available.</p>
+                  <p><strong>Specific Relief Act, 1963:</strong> Provides for specific performance of contracts, injunctions, and declaratory suits as civil remedies.</p>
+                </div>
+              </div>
+
+              <div className="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                <div className="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-purple-800">Legal Documentation & Rights</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Affidavits:</strong> Sworn statements used as evidence. Must be signed before notary or oath commissioner with proper stamp duty.</p>
+                  <p><strong>Power of Attorney:</strong> Legal authorization for someone to act on your behalf. Can be general or specific, registered or unregistered.</p>
+                  <p><strong>Will and Testament:</strong> Legal declaration for property distribution after death. Requires sound mind, free will, and proper attestation.</p>
+                  <p><strong>Consumer Rights:</strong> Right to safety, information, choice, hearing, redressal, and consumer education under Consumer Protection Act.</p>
+                  <p><strong>Property Registration:</strong> Compulsory for transactions above ₹100. Provides legal validity and protects against fraudulent claims.</p>
+                  <p><strong>Intellectual Property:</strong> Copyrights, trademarks, patents, and designs protection under respective acts for creative and commercial works.</p>
+                </div>
+              </div>
+
+              <div className="bg-red-50 p-6 rounded-xl border border-red-200">
+                <div className="bg-red-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-red-800">Criminal Law & Procedures</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>FIR Registration:</strong> First Information Report can be filed at any police station for cognizable offenses. Copy must be provided free of cost.</p>
+                  <p><strong>Arrest Procedures:</strong> Police must follow guidelines - inform grounds of arrest, right to legal aid, and produce before magistrate within 24 hours.</p>
+                  <p><strong>Bail Provisions:</strong> Regular bail for bailable offenses, anticipatory bail for apprehension of arrest. Factors include nature of offense and evidence.</p>
+                  <p><strong>Investigation Process:</strong> Includes evidence collection, witness examination, forensic analysis, and charge sheet filing within stipulated time.</p>
+                  <p><strong>Trial Stages:</strong> Framing of charges → Prosecution evidence → Defense evidence → Final arguments → Judgment → Sentencing.</p>
+                  <p><strong>Appeals Process:</strong> Sessions Court → High Court → Supreme Court hierarchy. Time limits vary based on court and nature of case.</p>
+                </div>
+              </div>
+
+              <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+                <div className="bg-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-indigo-800">Digital & Cyber Laws</h3>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Information Technology Act, 2000:</strong> Governs electronic commerce, digital signatures, cyber crimes, and data protection in India.</p>
+                  <p><strong>Data Privacy:</strong> Personal Data Protection Bill provides rights to data principals and obligations for data fiduciaries handling personal information.</p>
+                  <p><strong>Cyber Crimes:</strong> Includes hacking, identity theft, cyber stalking, phishing, and online fraud. Punishable with imprisonment and fines.</p>
+                  <p><strong>Digital Evidence:</strong> Electronic records admissible as evidence under Section 65B of Evidence Act with proper certification.</p>
+                  <p><strong>Social Media Laws:</strong> Intermediary guidelines require due diligence, grievance redressal, and compliance with takedown requests.</p>
+                  <p><strong>E-Commerce Regulations:</strong> Consumer Protection Rules 2020 provide specific protections for online shopping and digital transactions.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Comprehensive Sections */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="bg-gray-50 p-6 rounded-xl">
+                <h3 className="text-2xl font-bold mb-4 text-[#5C4033]">Legal Aid & Support Services</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">Free Legal Services</h4>
+                    <p className="text-gray-700">National Legal Services Authority (NALSA) provides free legal aid to eligible persons including women, children, SC/ST, victims of trafficking, and persons with disability.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">Lok Adalats</h4>
+                    <p className="text-gray-700">People's Courts provide speedy justice through compromise settlements. Awards are final and binding with no appeal provision, executed as court decrees.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">Legal Awareness</h4>
+                    <p className="text-gray-700">Legal literacy programs, legal aid clinics, and para-legal volunteer schemes help spread legal awareness and provide basic legal assistance.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 p-6 rounded-xl">
+                <h3 className="text-2xl font-bold mb-4 text-[#5C4033]">Recent Legal Reforms</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">New Criminal Laws</h4>
+                    <p className="text-gray-700">Bharatiya Nyaya Sanhita, Bharatiya Nagarik Suraksha Sanhita, and Bharatiya Sakshya Adhiniyam replace IPC, CrPC, and Evidence Act with modern provisions.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">Commercial Courts</h4>
+                    <p className="text-gray-700">Dedicated commercial courts for speedy disposal of commercial disputes with specified pecuniary jurisdiction and streamlined procedures.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2 text-lg">Digital Initiatives</h4>
+                    <p className="text-gray-700">e-Courts, virtual hearings, e-filing, and digital case management systems transforming Indian judiciary for better access and efficiency.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#5C4033] text-white p-8 rounded-xl">
+              <h3 className="text-2xl font-bold mb-6 text-center">Legal Education Resources</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 text-lg text-amber-200">Government Portals</h4>
+                  <ul className="space-y-2">
+                    <li>• National Legal Services Authority (NALSA) - nalsa.gov.in</li>
+                    <li>• India Code - Digital Repository of All Central Acts</li>
+                    <li>• Supreme Court of India E-Courts Services</li>
+                    <li>• Ministry of Law and Justice Official Website</li>
+                    <li>• District Court Websites for Local Resources</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 text-lg text-amber-200">Learning Platforms</h4>
+                  <ul className="space-y-2">
+                    <li>• SWAYAM - Free Online Courses on Legal Topics</li>
+                    <li>• NPTEL - Law and Related Certification Courses</li>
+                    <li>• e-PG Pathshala - Legal Study Materials</li>
+                    <li>• Legal Awareness Mobile Applications</li>
+                    <li>• Bar Council of India Training Programs</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-amber-100">Remember: This information is for educational purposes. Always consult a qualified lawyer for specific legal advice.</p>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <button 
+                onClick={toggleEducationHub}
+                className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-semibold"
+              >
+                Close Education Hub
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Access Tools */}
       <div className="py-12 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-bold mb-8 text-center">Quick Access Tools</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition">
+            <button 
+              onClick={() => navigate('/legal-self-diagnosis')}
+              className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#5C4033]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="mt-2 text-sm">Legal Self-Diagnosis</span>
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition">
+            <button 
+              onClick={() => navigate('/law-colleges-india')}
+              className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#5C4033]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-              <span className="mt-2 text-sm">Top Law Colleges</span>
+              <span className="mt-2 text-sm">Law Colleges India</span>
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#5C4033]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <span className="mt-2 text-sm">Case Timeline Viewer</span>
-            </button>
-            <button className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition">
+            <button 
+              onClick={() => navigate('/nearby-lawyer-finder')}
+              className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#5C4033]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span className="mt-2 text-sm">Nearby Lawyer Finder</span>
+            </button>
+            <button 
+              onClick={() => navigate('/case-timeline-viewer')}
+              className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex flex-col items-center transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#5C4033]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="mt-2 text-sm">Case Timeline Viewer</span>
             </button>
           </div>
         </div>
