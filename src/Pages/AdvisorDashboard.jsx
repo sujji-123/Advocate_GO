@@ -1,20 +1,23 @@
 // src/Pages/AdvisorDashboard.jsx
-import React from 'react';
+import React from 'react'; // Removed useState, useEffect for simplicity now
 import { useAuth } from '../contextprovider/AuthContext';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
-import { FaComments, FaUsers, FaHandHoldingHeart, FaBook, FaHeart } from 'react-icons/fa';
+import { FaComments, FaUsers, FaHandHoldingHeart, FaBook, FaHeart, FaQuestionCircle } from 'react-icons/fa'; // Added Icon
 
 const AdvisorDashboard = () => {
     const { user, logout } = useAuth();
+     // --- Simulate empty state ---
+     const hasPendingQueries = false; // Simulate no queries
+     // --- End simulation ---
 
     const features = [
         {
             title: "Answer Queries",
             description: "Help citizens with legal questions",
             icon: <FaComments className="text-2xl" />,
-            path: "/queries",
+            path: "/queries", // Make sure this path exists in App.jsx routes
             color: "from-orange-500 to-amber-500"
         },
         {
@@ -35,7 +38,7 @@ const AdvisorDashboard = () => {
             title: "Legal Aid Resources",
             description: "Access and share legal resources",
             icon: <FaBook className="text-2xl" />,
-            path: "/legal-aid",
+            path: "/legal-aid", // This path should lead to a relevant page
             color: "from-blue-500 to-cyan-500"
         }
     ];
@@ -88,11 +91,35 @@ const AdvisorDashboard = () => {
                         ))}
                     </div>
 
+                     {/* --- MODIFICATION START: Empty State for Queries --- */}
+                     {!hasPendingQueries && (
+                        <div className="text-center bg-white p-8 rounded-lg shadow border border-gray-200 mb-8">
+                            <FaQuestionCircle className="mx-auto h-12 w-12 text-gray-400" />
+                            <h3 className="mt-2 text-lg font-medium text-gray-900">No Pending Queries</h3>
+                            <p className="mt-1 text-sm text-gray-500">There are currently no user queries waiting for your response.</p>
+                            <div className="mt-6 flex flex-wrap justify-center gap-4">
+                            <Link
+                                to="/legal-aid" // Example link
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                            >
+                                Review Legal Aid Resources
+                            </Link>
+                             <Link
+                                to="/community-impact" // Example link
+                                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                            >
+                                See Community Impact
+                            </Link>
+                            </div>
+                        </div>
+                     )}
+                     {/* --- MODIFICATION END --- */}
+
                     {/* Community Impact */}
-                    <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl p-6 text-white text-center">
+                    <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl p-6 text-white text-center mb-8"> {/* Added mb-8 */}
                         <h3 className="text-xl font-semibold mb-2">Make a Difference</h3>
                         <p className="opacity-90 mb-4">Your guidance helps bridge the justice gap</p>
-                        <Link 
+                        <Link
                             to="/community-impact"
                             className="inline-block bg-white text-orange-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                         >

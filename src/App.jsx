@@ -5,7 +5,7 @@ import { useAuth } from './contextprovider/AuthContext';
 // Core Pages
 import Home from './Pages/Home';
 import Signup from './Pages/Signup';
-import DummySignup from './Pages/DummySignup'; // ADD THIS IMPORT
+import DummySignup from './Pages/DummySignup'; 
 import AuthPage from './Pages/AuthPage';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
@@ -30,6 +30,13 @@ import MyConnections from './Pages/MyConnections';
 import MyProposals from './Pages/MyProposals';
 import ChatPage from './Pages/ChatPage';
 
+// --- MODIFICATION START ---
+// Import the new components
+import ProposalInbox from './Pages/ProposalInbox'; 
+import Queries from './Pages/Queries';         
+// --- MODIFICATION END ---
+
+
 // New Pages
 import FAQsPage from './Pages/FAQs';
 import LegalAidPage from './Pages/LegalAid';
@@ -49,12 +56,18 @@ import LegalResources from './Pages/LegalResources';
 import CareerOpportunities from './Pages/CareerOpportunities';
 import CommunityImpact from './Pages/CommunityImpact';
 
-// Placeholder for missing pages
+// Placeholder for missing pages (Kept for routes not implemented yet)
 const ComingSoon = ({ title }) => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
+    <div className="text-center p-6">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
-      <p className="text-gray-600">This feature is coming soon.</p>
+      <p className="text-gray-600">This feature is under development and coming soon.</p>
+       <button
+            onClick={() => window.history.back()} 
+            className="mt-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        >
+            Go Back
+       </button>
     </div>
   </div>
 );
@@ -89,49 +102,66 @@ function App() {
 
         {/* --- Auth Routes --- */}
         <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
-        {/* --- Existing Signup (OTP) --- */}
         <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" replace />} />
-        {/* --- NEW Demo Signup (No OTP) --- */}
         <Route path="/demo-signup" element={!user ? <DummySignup /> : <Navigate to="/dashboard" replace />} />
-        {/* --- END NEW --- */}
         <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
         <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
 
         {/* --- Dashboard Redirector --- */}
-        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" replace state={{ from: '/dashboard' }} />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            user ? <Dashboard /> : <Navigate to="/login" replace state={{ from: '/dashboard' }} />
+          } 
+        />
 
-        {/* --- Role-Specific Dashboards --- */}
+        {/* --- Role-Specific Dashboards & Protected Routes --- */}
+        {/* Client Routes */}
         <Route element={<ProtectedRoute allowedRoles={['client']} />}>
           <Route path="/dashboard/client" element={<ClientDashboard />} />
-          <Route path="/proposals/sent" element={<MyProposals />} />
-          <Route path="/case-status" element={<CaseStatus />} />
+          <Route path="/proposals/sent" element={<MyProposals />} /> 
+          <Route path="/case-status" element={<CaseStatus />} /> 
+          {/* Note: /case-timeline-viewer is public, might want a protected version too */}
         </Route>
         
+        {/* Lawyer Routes */}
         <Route element={<ProtectedRoute allowedRoles={['lawyer']} />}>
           <Route path="/dashboard/lawyer" element={<LawyerDashboard />} />
-          <Route path="/proposals/inbox" element={<ComingSoon title="Proposal Inbox" />} />
+          {/* --- MODIFICATION START --- */}
+          <Route path="/proposals/inbox" element={<ProposalInbox />} /> 
+          {/* --- MODIFICATION END --- */}
+           {/* Add other lawyer specific routes here */}
         </Route>
         
+        {/* Student Routes */}
         <Route element={<ProtectedRoute allowedRoles={['student']} />}>
           <Route path="/dashboard/student" element={<StudentDashboard />} />
+          {/* Add other student specific routes here, e.g., viewing internships */}
+           <Route path="/career-opportunities" element={<CareerOpportunities />} />
         </Route>
         
+        {/* Advisor Routes */}
         <Route element={<ProtectedRoute allowedRoles={['advisor']} />}>
           <Route path="/dashboard/advisor" element={<AdvisorDashboard />} />
+           {/* --- MODIFICATION START --- */}
+          <Route path="/queries" element={<Queries />} /> 
+           {/* --- MODIFICATION END --- */}
+          <Route path="/community-impact" element={<CommunityImpact />} />
         </Route>
 
-        {/* --- Protected Routes (All Roles) --- */}
+        {/* --- Protected Routes (Accessible by All Authenticated Roles) --- */}
         <Route element={<ProtectedRoute allowedRoles={allRoles} />}>
-          <Route path="/users/:role" element={<UserDirectory />} />
+          <Route path="/users/:role" element={<UserDirectory />} /> 
           <Route path="/connections" element={<MyConnections />} />
           <Route path="/chat/:otherUserId" element={<ChatPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<AccountSettingsPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/legal-docs" element={<LegalDocuments />} />
+          <Route path="/legal-docs" element={<LegalDocuments />} /> 
+           {/* Add other shared protected routes here */}
         </Route>
 
-        {/* --- Fallback --- */}
+        {/* --- Fallback Route --- */}
         <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
       </Routes>
     </BrowserRouter>

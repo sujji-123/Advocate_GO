@@ -4,10 +4,14 @@ import { useAuth } from '../contextprovider/AuthContext';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
-import { FaUserTie, FaGraduationCap, FaUsers, FaBook, FaUniversity } from 'react-icons/fa';
+import { FaUserTie, FaGraduationCap, FaUsers, FaBook, FaUniversity, FaLink } from 'react-icons/fa'; // Added FaLink
 
 const StudentDashboard = () => {
     const { user, logout } = useAuth();
+     // --- Simulate empty state (e.g., no connections yet) ---
+     // In a real app, you might fetch connection count or check local state
+     const hasConnections = false; // Simulate no connections
+     // --- End simulation ---
 
     const features = [
         {
@@ -27,7 +31,7 @@ const StudentDashboard = () => {
         {
             title: "My Connections",
             description: "Manage your network",
-            icon: <FaGraduationCap className="text-2xl" />,
+            icon: <FaGraduationCap className="text-2xl" />, // Changed Icon
             path: "/connections",
             color: "from-purple-500 to-pink-500"
         },
@@ -88,11 +92,35 @@ const StudentDashboard = () => {
                         ))}
                     </div>
 
+                     {/* --- MODIFICATION START: Empty State for Connections --- */}
+                     {!hasConnections && (
+                        <div className="text-center bg-white p-8 rounded-lg shadow border border-gray-200 mb-8">
+                            <FaLink className="mx-auto h-12 w-12 text-gray-400" />
+                            <h3 className="mt-2 text-lg font-medium text-gray-900">Build Your Network</h3>
+                            <p className="mt-1 text-sm text-gray-500">You haven't connected with anyone yet. Start building your professional network!</p>
+                            <div className="mt-6 flex flex-wrap justify-center gap-4">
+                            <Link
+                                to="/users/lawyer"
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                            >
+                                Find Lawyer Mentors
+                            </Link>
+                             <Link
+                                to="/users/student"
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                            >
+                                Connect with Peers
+                            </Link>
+                            </div>
+                        </div>
+                     )}
+                     {/* --- MODIFICATION END --- */}
+
                     {/* Career Development */}
-                    <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 text-white text-center">
+                    <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 text-white text-center mb-8"> {/* Added mb-8 */}
                         <h3 className="text-xl font-semibold mb-2">Start Your Legal Journey</h3>
                         <p className="opacity-90 mb-4">Access internships, resources, and career guidance</p>
-                        <Link 
+                        <Link
                             to="/career-opportunities"
                             className="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                         >
