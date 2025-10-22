@@ -2,46 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-/* === START: Google Translate Widget Styles === */
+/* === START: Google Translate Widget Styles (Revised) === */
 
-/* This styles the main container in the navbar */
-.goog-te-gadget-simple {
+/* --- Hide Banner --- */
+.skiptranslate.goog-te-gadget {
+  display: none !important; /* Hide the main gadget container used for the banner */
+}
+body > iframe.goog-te-banner-frame {
+  display: none !important; /* Hide the banner iframe specifically */
+}
+/* Adjust body position if banner was previously shown */
+body {
+  top: 0 !important;
+  min-height: 0 !important; /* Reset min-height potentially set by translate */
+}
+
+
+/* --- Hide Tooltip --- */
+.goog-tooltip {
+ display: none !important;
+ visibility: hidden !important;
+}
+.goog-tooltip *, .goog-tooltip *:before, .goog-tooltip *:after {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* --- Style the Navbar Widget --- */
+#google_translate_element_container {
+    vertical-align: middle; /* Align nicely with other navbar items */
+}
+#google_translate_element .goog-te-gadget-simple {
   background-color: transparent !important;
   border: none !important;
+  font-size: 1rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer;
+  vertical-align: middle; /* Align text vertically */
+  display: inline-block; /* Ensure it takes space */
+}
+#google_translate_element .goog-te-gadget-simple span {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  line-height: normal !important; /* Reset line height */
+  display: inline !important; /* Make sure span displays */
+  vertical-align: middle !important; /* Align text vertically */
+}
+/* Hide the default Google arrow image */
+#google_translate_element .goog-te-gadget-simple img {
+    display: none !important;
+}
+/* Hide the text Google adds for the dropdown arrow if needed */
+#google_translate_element .goog-te-gadget-simple span[style*="text-decoration"] {
+    text-decoration: none !important;
+}
+#google_translate_element .goog-te-gadget-simple span[style*="border"] {
+    border: none !important;
 }
 
-/* This styles the text inside the navbar widget */
-.goog-te-gadget-simple span {
-  color: #ffffff !important; /* White text */
-  font-weight: 500;
+/* --- Style the Dropdown Menu --- */
+/* Use goog-te-menu2 for the V2 widget */
+.goog-te-menu-frame { /* This targets the iframe container */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+    border-radius: 0.375rem !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: white !important;
+    position: absolute !important;
+    z-index: 9999 !important; /* Ensure it's on top */
+    overflow: auto !important;
+    max-height: 300px !important;
 }
 
-/* This targets the main popup frame that appears on click */
-.goog-te-menu-frame {
-  max-width: 220px !important;    /* Limits the width of the popup */
-  max-height: 300px !important;   /* Sets a maximum height */
-  overflow-y: auto !important;    /* Makes the list SCROLLABLE if it exceeds the height */
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
-  border-radius: 0.5rem !important; /* Rounded corners */
+/* Style individual language items inside the iframe */
+/* IMPORTANT: These styles might not apply directly due to iframe cross-origin policy */
+/* We rely on the layout=SIMPLE and CSS hiding unwanted parts */
+.goog-te-menu2-item, .goog-te-menu2-item-selected {
+    /* Basic styling attempts */
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
 }
-
-/* This targets each language item in the list */
-.goog-te-menu-value {
-  display: block !important; /* Forces each language onto its own line (single column) */
-  width: 100%;             /* Ensures each item takes the full width */
-  padding: 0.75rem 1rem !important; /* Adds some padding */
-  font-size: 0.875rem !important;
-  color: #374151 !important; /* Dark text for readability */
+.goog-te-menu2-item:hover {
+    background-color: #f0f0f0 !important;
 }
-
-/* This adds a hover effect for better UX */
-.goog-te-menu-value:hover {
-  background-color: #f3f4f6 !important;
+/* Hide attribution inside dropdown */
+.goog-te-menu2-item > div.text {
+    /* This might contain "Powered by..." */
+    display: none !important; /* Try hiding the inner div if it contains branding */
 }
-
-/* Hides the "Powered by Google" text to save space */
-td > .goog-te-menu-value > div {
-  display: none !important;
+.goog-te-menu2-item span.text { /* Target the span containing language name */
+    color: #333 !important;
+    text-decoration: none !important;
+}
+.goog-te-menu2-item:hover span.text {
+    color: #111 !important;
 }
 
 /* === END: Google Translate Widget Styles === */
+
+html, body {
+  overflow-x: hidden;
+}

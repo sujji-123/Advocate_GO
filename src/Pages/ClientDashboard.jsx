@@ -1,13 +1,13 @@
 // src/Pages/ClientDashboard.jsx
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Removed useNavigate as it's not used directly here
 import { useAuth } from '../contextprovider/AuthContext';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 
 const ClientDashboard = () => {
     const { user, logout } = useAuth();
-    const navigate = useNavigate();
+    // const navigate = useNavigate(); // Removed unused import
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -18,35 +18,46 @@ const ClientDashboard = () => {
                         Welcome, {user?.name || 'Client'}!
                     </h1>
                     <p className="text-gray-600 mb-8">This is your personal dashboard. From here, you can manage your legal needs.</p>
-                    
+
                     {/* --- MODIFICATION START --- */}
-                    {/* Changed grid layout and added new links */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Link to="/lawyer-locator" className="block p-6 bg-green-50 hover:bg-green-100 rounded-lg shadow-sm transition col-span-1 md:col-span-2">
-                            <h2 className="text-xl font-semibold text-green-800">Find a Lawyer & Send Case Proposal</h2>
-                            <p className="text-green-600 mt-2">Search our directory and send your case details directly.</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Link to find lawyers and send proposals */}
+                        <Link to="/lawyer-locator" className="block p-6 bg-green-50 hover:bg-green-100 rounded-lg shadow-sm transition">
+                            <h2 className="text-xl font-semibold text-green-800">Find Lawyers & Send Proposal</h2>
+                            <p className="text-green-600 mt-2">Search the directory and propose your case.</p>
                         </Link>
-                        <Link to="/proposals/sent" className="block p-6 bg-blue-50 hover:bg-blue-100 rounded-lg shadow-sm transition">
-                            <h2 className="text-xl font-semibold text-blue-800">My Case Proposals</h2>
-                            <p className="text-blue-600 mt-2">Track the status of proposals you've sent.</p>
+
+                        {/* Link to find advisors */}
+                         <Link to="/users/advisor" className="block p-6 bg-blue-50 hover:bg-blue-100 rounded-lg shadow-sm transition">
+                            <h2 className="text-xl font-semibold text-blue-800">Connect with Advisors</h2>
+                            <p className="text-blue-600 mt-2">Find and connect with legal advisors.</p>
                         </Link>
-                        <Link to="/case-status" className="block p-6 bg-blue-50 hover:bg-blue-100 rounded-lg shadow-sm transition">
-                            <h2 className="text-xl font-semibold text-blue-800">My Case Status</h2>
-                            <p className="text-blue-600 mt-2">Track updates on your active cases.</p>
+
+                        {/* Link to view sent proposals */}
+                        <Link to="/proposals/sent" className="block p-6 bg-yellow-50 hover:bg-yellow-100 rounded-lg shadow-sm transition">
+                            <h2 className="text-xl font-semibold text-yellow-800">My Case Proposals</h2>
+                            <p className="text-yellow-600 mt-2">Track the status of proposals you've sent.</p>
                         </Link>
-                         <Link to="/legal-docs" className="block p-6 bg-yellow-50 hover:bg-yellow-100 rounded-lg shadow-sm transition">
-                            <h2 className="text-xl font-semibold text-yellow-800">Upload Documents</h2>
-                            <p className="text-yellow-600 mt-2">Securely submit documents for your case.</p>
-                        </Link>
+
+                         {/* Link to manage existing connections */}
                         <Link to="/connections" className="block p-6 bg-purple-50 hover:bg-purple-100 rounded-lg shadow-sm transition">
                             <h2 className="text-xl font-semibold text-purple-800">My Connections</h2>
-                            <p className="text-purple-600 mt-2">Manage requests and chat with connections.</p>
+                            <p className="text-purple-600 mt-2">Manage requests and chat.</p>
                         </Link>
+
+                        {/* Existing link */}
+                        <Link to="/case-status" className="block p-6 bg-indigo-50 hover:bg-indigo-100 rounded-lg shadow-sm transition">
+                            <h2 className="text-xl font-semibold text-indigo-800">My Case Status</h2>
+                            <p className="text-indigo-600 mt-2">Track updates on your active cases.</p>
+                        </Link>
+
+                        {/* Removed direct Upload Documents link */}
+                        {/* We will add document upload within the chat or case management later */}
                     </div>
                     {/* --- MODIFICATION END --- */}
-                    
-                    <button 
-                        className='bg-red-600 text-white px-6 py-2 rounded-lg mt-10 hover:bg-red-700 transition' 
+
+                    <button
+                        className='bg-red-600 text-white px-6 py-2 rounded-lg mt-10 hover:bg-red-700 transition'
                         onClick={logout}
                     >
                         Logout
