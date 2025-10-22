@@ -2,36 +2,43 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contextprovider/AuthContext';
 
-// Import Pages
+// --- Core Pages ---
 import Home from './Pages/Home';
 import Signup from './Pages/Signup';
-import AuthPage from './Pages/AuthPage'; 
+import AuthPage from './Pages/AuthPage';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
-import Dashboard from './Pages/Dashboard';
-import More from './Pages/More'; 
-import TopLawCollegesPage from './Pages/lawcolleges';
-import LawyerTypeAdvisorPage from './Pages/Lawyertypeadvisor';
-import LawyerLocator from './Pages/lawdir';
-import LegalDocuments from './Pages/legaldocs';
-import CaseStatus from './Pages/casestatus';
+import More from './Pages/More';
 
+// --- Dashboard & Role Specific ---
+import Dashboard from './Pages/Dashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ClientDashboard from './Pages/ClientDashboard';
 import LawyerDashboard from './Pages/LawyerDashboard';
 import StudentDashboard from './Pages/StudentDashboard';
 import AdvisorDashboard from './Pages/AdvisorDashboard';
 
-// --- NEWLY IMPORTED PAGES ---
+// --- Feature Pages ---
+import TopLawCollegesPage from './Pages/lawcolleges';
+import LawyerTypeAdvisorPage from './Pages/Lawyertypeadvisor';
+import LawyerLocator from './Pages/lawdir';
+import LegalDocuments from './Pages/legaldocs';
+import CaseStatus from './Pages/casestatus';
 import UserDirectory from './Pages/UserDirectory';
 import MyConnections from './Pages/MyConnections';
 import MyProposals from './Pages/MyProposals';
 import ChatPage from './Pages/ChatPage';
-// --- END NEW ---
 
+// --- New Pages ---
+import FAQsPage from './Pages/FAQs';
+import LegalAidPage from './Pages/LegalAid';
+import ProfilePage from './Pages/Profile';
+import AccountSettingsPage from './Pages/AccountSettings';
+import NotificationsPage from './Pages/Notifications';
 
 function App() {
   const { user } = useAuth();
+  const allRoles = ['client', 'lawyer', 'student', 'advisor'];
 
   return (
     <BrowserRouter>
@@ -40,48 +47,52 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/more" element={<More />} />
         <Route path="/top-law-colleges" element={<TopLawCollegesPage />} />
-        <Route path='/lawyer-type-advisor' element={<LawyerTypeAdvisorPage />} />
-        <Route path='/lawyer-locator' element={<LawyerLocator />} />
-        
-        {/* These are probably better as protected routes, but leaving as-is */}
-        <Route path='/legal-docs' element={<LegalDocuments />} />
-        <Route path='/case-status' element={<CaseStatus />} /> 
+        <Route path="/lawyer-type-advisor" element={<LawyerTypeAdvisorPage />} />
+        <Route path="/lawyer-locator" element={<LawyerLocator />} />
+        <Route path="/faqs" element={<FAQsPage />} />
+        <Route path="/legal-aid" element={<LegalAidPage />} />
 
-        {/* --- Auth Routes (Logged-out users only) --- */}
-        <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" />} />
-        <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" />} />
-        <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" />} />
-        <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" />} />
+        {/* --- Auth Routes --- */}
+        <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
 
-        
-        {/* --- Main Dashboard Redirector --- */}
-        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+        {/* --- Dashboard Redirector --- */}
+        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
 
-        {/* --- Protected Role-Specific Dashboards --- */}
+        {/* --- Role-Specific Dashboards --- */}
         <Route element={<ProtectedRoute allowedRoles={['client']} />}>
           <Route path="/dashboard/client" element={<ClientDashboard />} />
           <Route path="/proposals/sent" element={<MyProposals />} />
+          <Route path="/case-status" element={<CaseStatus />} />
         </Route>
+        
         <Route element={<ProtectedRoute allowedRoles={['lawyer']} />}>
           <Route path="/dashboard/lawyer" element={<LawyerDashboard />} />
         </Route>
+        
         <Route element={<ProtectedRoute allowedRoles={['student']} />}>
           <Route path="/dashboard/student" element={<StudentDashboard />} />
         </Route>
+        
         <Route element={<ProtectedRoute allowedRoles={['advisor']} />}>
           <Route path="/dashboard/advisor" element={<AdvisorDashboard />} />
         </Route>
 
-        {/* --- NEW PROTECTED ROUTES (All Roles) --- */}
-        <Route element={<ProtectedRoute allowedRoles={['client', 'lawyer', 'student', 'advisor']} />}>
+        {/* --- Protected Routes (All Roles) --- */}
+        <Route element={<ProtectedRoute allowedRoles={allRoles} />}>
           <Route path="/users/:role" element={<UserDirectory />} />
           <Route path="/connections" element={<MyConnections />} />
           <Route path="/chat/:otherUserId" element={<ChatPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<AccountSettingsPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/legal-docs" element={<LegalDocuments />} />
         </Route>
 
-        {/* --- Fallback Route --- */}
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
-        
+        {/* --- Fallback --- */}
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
       </Routes>
     </BrowserRouter>
   );
