@@ -7,6 +7,7 @@ import LocationTracker from '../Components/LocationTracker';
 import Testimonials from '../Components/Testimonials';
 import Footer from '../Components/Footer';
 import Navbar from '../Components/Navbar';
+import { Link } from 'react-router-dom'; // ADD THIS IMPORT
 
 // Using random user API for profile images
 const lawyers = [
@@ -143,6 +144,38 @@ const Home = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <HeroSection />
+      
+      {/* --- ADDED: Demo Account Section --- */}
+      <section className="text-center py-8 md:py-12 bg-gradient-to-r from-teal-50 to-cyan-50 border-b border-t border-teal-200">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+            Want to Explore AdvocateGO?
+          </h2>
+          <p className="text-gray-600 text-base md:text-lg mb-6">
+            Create a demo account instantly to experience all features without email verification. 
+            Perfect for testing and demonstration purposes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              to="/demo-signup"
+              className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-200 ease-in-out font-semibold text-sm md:text-base transform hover:scale-105"
+            >
+              Create Demo Account
+            </Link>
+            <Link
+              to="/register"
+              className="border border-teal-500 text-teal-600 px-6 py-3 rounded-lg hover:bg-teal-50 transition duration-200 ease-in-out font-medium text-sm md:text-base"
+            >
+              Regular Sign Up
+            </Link>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            Demo accounts work with all features but don't require email verification.
+          </p>
+        </div>
+      </section>
+      {/* --- END ADDED SECTION --- */}
+
       <CategoryCarousel />
       <WhyChooseUs />
       <ProfileCarousel 

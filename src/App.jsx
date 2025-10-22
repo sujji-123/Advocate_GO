@@ -5,8 +5,7 @@ import { useAuth } from './contextprovider/AuthContext';
 // Core Pages
 import Home from './Pages/Home';
 import Signup from './Pages/Signup';
-// --- NEW: Import Simple Signup ---
-// --- END NEW ---
+import DummySignup from './Pages/DummySignup'; // ADD THIS IMPORT
 import AuthPage from './Pages/AuthPage';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
@@ -92,8 +91,8 @@ function App() {
         <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
         {/* --- Existing Signup (OTP) --- */}
         <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" replace />} />
-        {/* --- NEW Simple Signup (No OTP) --- */}
-        
+        {/* --- NEW Demo Signup (No OTP) --- */}
+        <Route path="/demo-signup" element={!user ? <DummySignup /> : <Navigate to="/dashboard" replace />} />
         {/* --- END NEW --- */}
         <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
         <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
