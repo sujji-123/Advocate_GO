@@ -34,6 +34,7 @@ import ChatPage from './Pages/ChatPage';
 // Import the new components
 import ProposalInbox from './Pages/ProposalInbox';
 import Queries from './Pages/Queries';
+import MyCases from './Pages/MyCases'; // <-- Import the new MyCases component
 
 // New Pages
 import FAQsPage from './Pages/FAQs';
@@ -143,8 +144,9 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['client']} />}>
               <Route path="/dashboard/client" element={<ClientDashboard />} />
               <Route path="/proposals/sent" element={<MyProposals />} />
-              {/* Added /my-cases for client */}
-              <Route path="/my-cases" element={<ComingSoon title="My Cases" />} />
+              {/* --- MODIFICATION: Updated /my-cases route --- */}
+              <Route path="/my-cases" element={<MyCases />} />
+              {/* --- END MODIFICATION --- */}
               <Route path="/case-status" element={<CaseStatus />} />
             </Route>
 

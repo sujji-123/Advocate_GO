@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useAuth } from '../contextprovider/AuthContext';
-import { FaBars, FaSearch, FaTimes, FaChevronDown, FaUser, FaBook, FaBalanceScale, FaGavel, FaQuestionCircle, FaFileAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaBars, FaSearch, FaTimes, FaChevronDown, FaUser, FaBook, FaBalanceScale, FaGavel, FaQuestionCircle, FaFileAlt, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa';
 import GoogleTranslate from './GoogleTranslate';
 import logo from '../assets/WhatsApp Image 2025-10-22 at 17.37.29_e24b82ec.jpg';
 
 const WelcomeBanner = () => {
+  // ... (WelcomeBanner code remains the same) ...
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const WelcomeBanner = () => {
   );
 };
 
+
 const Navbar = ({ setQuery }) => {
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,17 +69,21 @@ const Navbar = ({ setQuery }) => {
         setActiveDropdown(activeDropdown === menu ? null : menu);
     };
 
-    const dashboardSubItems = [
-        { title: "My Cases", path: "/my-cases", icon: <FaFileAlt className="mr-2" /> },
+    const clientDashboardSubItems = [
+        { title: "My Cases", path: "/my-cases", icon: <FaBriefcase className="mr-2" /> },
         { title: "Case Status", path: "/case-status", icon: <FaFileAlt className="mr-2" /> }
     ];
+
+    // --- Check if the current user should see the dashboard sub-items ---
+    const showDashboardSubItems = user?.role === 'client';
 
     const menuItems = [
         {
             title: "Dashboard",
             icon: <FaUser className="mr-2" />,
             path: "/dashboard",
-            subItems: user ? dashboardSubItems : []
+            // Subitems are always defined, but conditionally SHOWN later
+            subItems: clientDashboardSubItems
         },
         {
             title: "Legal Resources",
@@ -105,6 +111,7 @@ const Navbar = ({ setQuery }) => {
         { title: "Notifications", path: "/notifications" }
     ];
 
+
     return (
         <>
             <WelcomeBanner />
@@ -112,15 +119,18 @@ const Navbar = ({ setQuery }) => {
             <nav className='sticky top-0 bg-gray-800 text-white shadow-md z-[999]'>
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center py-3">
-                        <div className="flex items-center">
+                        {/* --- MODIFICATION: Group button and logo, ensure button doesn't take space on md+ --- */}
+                        <div className="flex items-center space-x-3">
+                            {/* Hamburger Button */}
                             <button
-                                className='md:hidden text-white mr-3'
+                                className='md:hidden text-white' // Only show on screens smaller than md
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                             >
                                 {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                             </button>
-                            <Link 
-                                to='/' 
+                            {/* Logo Link */}
+                            <Link
+                                to='/'
                                 className="flex items-center text-xl font-bold text-white"
                                 onClick={() => { closeAllDropdowns(); setIsMenuOpen(false); }}
                             >
@@ -128,35 +138,42 @@ const Navbar = ({ setQuery }) => {
                                 AdvocateGO
                             </Link>
                         </div>
+                        {/* --- END MODIFICATION --- */}
+
 
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-4">
                             {menuItems.map((menu) => (
-                                <div 
-                                    key={menu.title} 
+                                <div
+                                    key={menu.title}
                                     className="relative group"
                                     onMouseEnter={() => setActiveDropdown(menu.title)}
                                     onMouseLeave={() => setActiveDropdown(null)}
                                 >
-                                    {menu.title === "Dashboard" && user ? (
-                                        <button
-                                            className="flex items-center px-3 py-2 hover:text-blue-300"
-                                            onClick={() => toggleDropdown(menu.title)}
-                                        >
-                                            {menu.icon}
-                                            {menu.title}
-                                            {menu.subItems.length > 0 && <FaChevronDown className="ml-1 text-xs" />}
-                                        </button>
-                                    ) : menu.title === "Dashboard" && !user ? (
-                                         <Link
-                                            to={menu.path}
-                                            className="flex items-center px-3 py-2 hover:text-blue-300"
-                                            onClick={closeAllDropdowns}
-                                        >
-                                            {menu.icon}
-                                            {menu.title}
-                                        </Link>
-                                    ) : (
+                                    {/* --- MODIFICATION: Simplified logic for rendering Dashboard item --- */}
+                                    {menu.title === "Dashboard" ? (
+                                        user ? ( // Only show Dashboard if logged in
+                                            showDashboardSubItems ? ( // If it has sub-items for this user
+                                                <button
+                                                    className="flex items-center px-3 py-2 hover:text-blue-300"
+                                                    onClick={() => toggleDropdown(menu.title)}
+                                                >
+                                                    {menu.icon}
+                                                    {menu.title}
+                                                    <FaChevronDown className="ml-1 text-xs" />
+                                                </button>
+                                            ) : ( // If it's just a link
+                                                <Link
+                                                    to={menu.path}
+                                                    className="flex items-center px-3 py-2 hover:text-blue-300"
+                                                    onClick={closeAllDropdowns}
+                                                >
+                                                    {menu.icon}
+                                                    {menu.title}
+                                                </Link>
+                                            )
+                                        ) : null // Don't show Dashboard if not logged in
+                                    ) : ( // Other menu items (Legal Resources, Help)
                                         <button
                                             className="flex items-center px-3 py-2 hover:text-blue-300"
                                             onClick={() => toggleDropdown(menu.title)}
@@ -166,29 +183,34 @@ const Navbar = ({ setQuery }) => {
                                             {menu.subItems.length > 0 && <FaChevronDown className="ml-1 text-xs" />}
                                         </button>
                                     )}
+                                    {/* --- END MODIFICATION --- */}
 
                                     {/* Submenu */}
                                     {menu.subItems && menu.subItems.length > 0 && (
-                                        <div className={`absolute left-0 mt-2 w-56 bg-gray-700 rounded-md shadow-lg z-50 ${activeDropdown === menu.title ? 'block' : 'hidden'} group-hover:block`}>
-                                            {menu.subItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    to={item.path}
-                                                    className="flex items-center w-full px-4 py-3 hover:bg-gray-600 text-white text-sm"
-                                                    onClick={closeAllDropdowns}
-                                                >
-                                                    {item.icon}
-                                                    {item.title}
-                                                </Link>
-                                            ))}
-                                        </div>
+                                        // --- MODIFICATION: Conditionally show based on role for Dashboard ---
+                                        (menu.title !== "Dashboard" || showDashboardSubItems) && (
+                                        // --- END MODIFICATION ---
+                                            <div className={`absolute left-0 mt-2 w-56 bg-gray-700 rounded-md shadow-lg z-50 ${activeDropdown === menu.title ? 'block' : 'hidden'} group-hover:block`}>
+                                                {menu.subItems.map((item) => (
+                                                    <Link
+                                                        key={item.title}
+                                                        to={item.path}
+                                                        className="flex items-center w-full px-4 py-3 hover:bg-gray-600 text-white text-sm"
+                                                        onClick={closeAllDropdowns}
+                                                    >
+                                                        {item.icon}
+                                                        {item.title}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        )
                                     )}
                                 </div>
                             ))}
 
                             {/* Settings Dropdown (Only if logged in) */}
                             {user && (
-                                <div 
+                                <div
                                     className="relative group"
                                     onMouseEnter={() => setActiveDropdown('Settings')}
                                     onMouseLeave={() => setActiveDropdown(null)}
@@ -231,7 +253,7 @@ const Navbar = ({ setQuery }) => {
                                     type='text'
                                     placeholder="Search..."
                                     className='bg-gray-700 text-white px-3 py-1.5 rounded-full pl-10 w-40 md:w-56 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500'
-                                    onChange={(e) => setQuery(e.target.value)}
+                                    onChange={(e) => setQuery(e.target.value)} // Ensure setQuery is passed correctly
                                 />
                             </div>
 
@@ -241,15 +263,15 @@ const Navbar = ({ setQuery }) => {
 
                             {!user && (
                                 <div className="hidden md:flex items-center space-x-2">
-                                    <Link 
-                                        to='/login' 
+                                    <Link
+                                        to='/login'
                                         className='bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-sm transition'
                                         onClick={closeAllDropdowns}
                                     >
                                         Login
                                     </Link>
-                                    <Link 
-                                        to='/register' 
+                                    <Link
+                                        to='/register'
                                         className='bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded text-sm transition'
                                         onClick={closeAllDropdowns}
                                     >
@@ -266,9 +288,11 @@ const Navbar = ({ setQuery }) => {
                     <div className="md:hidden absolute top-full left-0 w-full bg-gray-800 border-t border-gray-700 shadow-lg max-h-[calc(100vh-60px)] overflow-y-auto">
                         <div className="container mx-auto px-4 py-4 space-y-4">
 
+                            {/* --- Adjusted Mobile Menu Logic --- */}
                             {menuItems.map((menu) => (
                                 <div key={menu.title}>
-                                    {menu.title === "Dashboard" && !user ? (
+                                    {/* Show Dashboard link if logged in, otherwise skip */}
+                                    {menu.title === "Dashboard" && user ? (
                                         <Link
                                             to={menu.path}
                                             className="flex items-center py-2 text-lg font-semibold"
@@ -277,22 +301,15 @@ const Navbar = ({ setQuery }) => {
                                             {menu.icon}
                                             {menu.title}
                                         </Link>
-                                    ) : menu.title === "Dashboard" && user && menu.subItems.length === 0 ? (
-                                        <Link
-                                            to={menu.path}
-                                            className="flex items-center py-2 text-lg font-semibold"
-                                            onClick={() => setIsMenuOpen(false)}
-                                        >
-                                            {menu.icon}
-                                            {menu.title}
-                                        </Link>
-                                    ) : (
+                                    ) : menu.title !== "Dashboard" ? ( // Show non-dashboard items always
                                         <h4 className="flex items-center py-2 text-lg font-semibold">
                                             {menu.icon}
                                             {menu.title}
                                         </h4>
-                                    )}
-                                    {menu.subItems && menu.subItems.length > 0 && (
+                                    ): null}
+
+                                    {/* Render sub-items, conditionally for Dashboard */}
+                                    {menu.subItems && menu.subItems.length > 0 && (menu.title !== "Dashboard" || showDashboardSubItems) && (
                                         <ul className="space-y-2 pl-8 pt-2">
                                             {menu.subItems.map((item) => (
                                                 <li key={item.title}>
@@ -310,6 +327,7 @@ const Navbar = ({ setQuery }) => {
                                     )}
                                 </div>
                             ))}
+                            {/* --- END MODIFICATION --- */}
 
                             {user ? (
                                 <div>
