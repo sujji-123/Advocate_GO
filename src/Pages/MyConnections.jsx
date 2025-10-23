@@ -1,8 +1,8 @@
 // src/Pages/MyConnections.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import { Link } from 'react-router-dom';
 import { FaUserPlus, FaUsers, FaCheck, FaTimes, FaCommentDots, FaSpinner, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa';
 
@@ -31,7 +31,7 @@ const MyConnections = () => {
       }
 
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+
       const [pendingRes, acceptedRes] = await Promise.all([
         apiClient.get('/api/connections/pending'),
         apiClient.get('/api/connections/accepted')
@@ -71,7 +71,7 @@ const MyConnections = () => {
 
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       await apiClient.put(`/api/connections/respond/${requestId}`, { status });
-      
+
       fetchData(); // Refresh data
     } catch (err) {
       console.error(`Failed to ${status} request:`, err);
@@ -91,8 +91,9 @@ const MyConnections = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
-      <Navbar />
+    // Removed outer div and Navbar
+    // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+    //   <Navbar />
       <main className="flex-1 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -285,8 +286,8 @@ const MyConnections = () => {
           </section>
         </div>
       </main>
-      <Footer />
-    </div>
+      // Removed Footer
+    // </div>
   );
 };
 

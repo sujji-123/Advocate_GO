@@ -1,8 +1,8 @@
 // src/Pages/ProposalInbox.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const apiClient = axios.create({
@@ -26,7 +26,7 @@ const ProposalInbox = () => {
         return;
     }
     apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    
+
     apiClient.get('/api/proposals/inbox')
       .then(res => {
         setProposals(res.data);
@@ -56,11 +56,11 @@ const ProposalInbox = () => {
         return;
     }
     apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    
+
     apiClient.put(`/api/proposals/respond/${proposalId}`, { status })
       .then(res => {
         // Update the specific proposal's status locally for immediate feedback
-        setProposals(prev => prev.map(p => 
+        setProposals(prev => prev.map(p =>
             p._id === proposalId ? { ...p, status: status } : p
         ));
         // Optionally refetch all data: fetchData();
@@ -84,12 +84,13 @@ const ProposalInbox = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
+    // Removed outer div and Navbar
+    // <div className="flex flex-col min-h-screen bg-gray-50">
+    //  <Navbar />
       <main className="flex-1 py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className='text-3xl font-bold mb-8 text-center text-gray-800'>Case Proposal Inbox</h1>
-          
+
            {loading && (
             <div className="text-center py-10">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
@@ -103,7 +104,7 @@ const ProposalInbox = () => {
                 <span className="block sm:inline"> {error}</span>
             </div>
           )}
-          
+
           <div className="space-y-6">
             {!loading && !error && proposals.length === 0 && (
                  <div className="text-center bg-white p-8 rounded-lg shadow border border-gray-200">
@@ -127,18 +128,18 @@ const ProposalInbox = () => {
                 </div>
                 <p className="text-gray-700 bg-gray-50 p-4 rounded mt-4 border border-gray-200 whitespace-pre-wrap">{proposal.description}</p>
                  <p className="text-xs text-gray-500 mt-4">Received on: {new Date(proposal.createdAt).toLocaleDateString()}</p>
-                
+
                 {/* Response Buttons only if pending */}
                 {proposal.status === 'pending' && (
                     <div className="flex gap-4 mt-4 pt-4 border-t border-gray-200">
-                        <button 
+                        <button
                             onClick={() => handleResponse(proposal._id, 'accepted')}
                             disabled={respondingId === proposal._id}
                             className="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 disabled:opacity-50 flex items-center"
                             >
                             <FaCheck className="mr-1"/> Accept
                         </button>
-                        <button 
+                        <button
                             onClick={() => handleResponse(proposal._id, 'declined')}
                             disabled={respondingId === proposal._id}
                             className="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 disabled:opacity-50 flex items-center"
@@ -153,8 +154,8 @@ const ProposalInbox = () => {
 
         </div>
       </main>
-      <Footer />
-    </div>
+      // Removed Footer
+    // </div>
   );
 };
 

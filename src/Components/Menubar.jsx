@@ -1,4 +1,4 @@
-// src/Components/Sidebar.jsx
+// src/Components/Menubar.jsx
 import React from 'react';
 
 const Menubar = () => {

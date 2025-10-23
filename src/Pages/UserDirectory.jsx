@@ -2,19 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contextprovider/AuthContext';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import axios from 'axios';
-import { 
-  FaSearch, 
-  FaSpinner, 
-  FaUser, 
-  FaBriefcase, 
-  FaGraduationCap, 
-  FaHeart, 
-  FaMapMarkerAlt, 
-  FaStar, 
-  FaEnvelope, 
+import {
+  FaSearch,
+  FaSpinner,
+  FaUser,
+  FaBriefcase,
+  FaGraduationCap,
+  FaHeart,
+  FaMapMarkerAlt,
+  FaStar,
+  FaEnvelope,
   FaLink,
   FaCheck,
   FaClock,
@@ -26,7 +26,7 @@ const UserDirectory = () => {
   const { role } = useParams();
   const navigate = useNavigate();
   const { user, token } = useAuth();
-  
+
   const [realUsers, setRealUsers] = useState([]);
   const [dummyUsers, setDummyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -180,7 +180,7 @@ const UserDirectory = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await apiClient.get(`/users?role=${role}`);
       const users = response.data.map(user => ({
         ...user,
@@ -190,9 +190,9 @@ const UserDirectory = () => {
         experience: user.experience || '',
         specialization: user.specialization || ''
       }));
-      
+
       setRealUsers(users);
-      
+
     } catch (err) {
       console.error('Error fetching real users:', err);
       // Don't set error here - we'll show dummy users as fallback
@@ -252,19 +252,19 @@ const UserDirectory = () => {
 
     try {
       setConnectionLoading(prev => ({ ...prev, [targetUserId]: true }));
-      
-      const response = await apiClient.post('/connections/request', { 
-        recipientId: targetUserId 
+
+      const response = await apiClient.post('/connections/request', {
+        recipientId: targetUserId
       });
-      
+
       // Update local state
       setConnectionStatus(prev => ({
         ...prev,
         [targetUserId]: 'pending'
       }));
-      
+
       alert('Connection request sent successfully!');
-      
+
     } catch (err) {
       console.error('Error sending connection request:', err);
       const errorMessage = err.response?.data?.message || 'Failed to send connection request. Please try again.';
@@ -278,7 +278,7 @@ const UserDirectory = () => {
     // Don't show connect button for current user
     if (userItem.id === user?.id) {
       return (
-        <button 
+        <button
           disabled
           className="flex-1 bg-gray-400 text-white py-2 rounded-lg cursor-not-allowed opacity-50"
         >
@@ -290,7 +290,7 @@ const UserDirectory = () => {
     // Demo profile button
     if (userItem.isDummy) {
       return (
-        <button 
+        <button
           disabled
           className="flex-1 bg-yellow-500 text-white py-2 rounded-lg cursor-not-allowed flex items-center justify-center"
         >
@@ -305,7 +305,7 @@ const UserDirectory = () => {
 
     if (isLoading) {
       return (
-        <button 
+        <button
           disabled
           className="flex-1 bg-blue-400 text-white py-2 rounded-lg cursor-not-allowed flex items-center justify-center"
         >
@@ -318,7 +318,7 @@ const UserDirectory = () => {
     switch (status) {
       case 'pending':
         return (
-          <button 
+          <button
             disabled
             className="flex-1 bg-yellow-500 text-white py-2 rounded-lg cursor-not-allowed flex items-center justify-center"
           >
@@ -328,7 +328,7 @@ const UserDirectory = () => {
         );
       case 'connected':
         return (
-          <button 
+          <button
             disabled
             className="flex-1 bg-green-500 text-white py-2 rounded-lg cursor-not-allowed flex items-center justify-center"
           >
@@ -338,7 +338,7 @@ const UserDirectory = () => {
         );
       default:
         return (
-          <button 
+          <button
             onClick={() => handleConnectionRequest(userItem.id)}
             className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
@@ -353,7 +353,7 @@ const UserDirectory = () => {
     // For current user's own profile
     if (userItem.id === user?.id) {
       return (
-        <button 
+        <button
           onClick={() => navigate('/profile')}
           className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition-colors"
         >
@@ -366,7 +366,7 @@ const UserDirectory = () => {
     if (!userItem.isDummy && connectionStatus[userItem.id] === 'connected') {
       return (
         <div className="flex space-x-3 w-full">
-          <button 
+          <button
             onClick={() => navigate(`/chat/${userItem.id}`)}
             className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
           >
@@ -416,23 +416,24 @@ const UserDirectory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
+      // Removed outer div and Navbar
+      // <div className="min-h-screen bg-gray-50">
+      //  <Navbar />
         <div className="flex justify-center items-center py-20">
           <div className="text-center">
             <FaSpinner className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" />
             <p className="text-gray-600">Loading {roleConfig.title.toLowerCase()}...</p>
           </div>
         </div>
-        <Footer />
-      </div>
+        // Removed Footer
+      // </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
+    // Removed outer div and Navbar
+    // <div className="min-h-screen bg-gray-50">
+    //  <Navbar />
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -536,8 +537,8 @@ const UserDirectory = () => {
               <FaUser className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No {role}s found</h3>
               <p className="text-gray-600 mb-6">
-                {allUsers.length === 0 
-                  ? `No ${role}s are currently available.` 
+                {allUsers.length === 0
+                  ? `No ${role}s are currently available.`
                   : 'No users match your search criteria.'}
               </p>
               {(searchTerm || filters.specialization || filters.location) && (
@@ -552,8 +553,8 @@ const UserDirectory = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredUsers.map((userItem) => (
-                <div 
-                  key={userItem.id} 
+                <div
+                  key={userItem.id}
                   className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow ${
                     userItem.isDummy ? 'border-2 border-yellow-400' : 'border border-gray-200'
                   }`}
@@ -602,8 +603,8 @@ const UserDirectory = () => {
                             <FaStar
                               key={i}
                               className={`h-4 w-4 ${
-                                i < Math.floor(userItem.rating) 
-                                  ? 'text-yellow-400' 
+                                i < Math.floor(userItem.rating)
+                                  ? 'text-yellow-400'
                                   : 'text-gray-300'
                               }`}
                             />
@@ -623,7 +624,7 @@ const UserDirectory = () => {
                           <span>{userItem.experience} experience</span>
                         </div>
                       )}
-                      
+
                       {userItem.location && (
                         <div className="flex items-center text-sm text-gray-600">
                           <FaMapMarkerAlt className="h-4 w-4 mr-2" />
@@ -656,9 +657,8 @@ const UserDirectory = () => {
           )}
         </div>
       </main>
-
-      <Footer />
-    </div>
+      // Removed Footer
+    // </div>
   );
 };
 

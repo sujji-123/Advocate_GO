@@ -1,4 +1,6 @@
+// src/Pages/casestatus.jsx
 import React, { useState } from "react";
+// No Navbar or Footer needed here
 
 const CaseStatus = () => {
   const [client] = useState({
@@ -52,8 +54,9 @@ const CaseStatus = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6 font-sans">
-      {/* Header */}
+    // Replaced outer div with main tag as Navbar/Footer are in App.jsx
+    <main className="min-h-screen bg-gray-900 text-gray-100 p-6 font-sans">
+      {/* Header (can be kept as a page-specific header if needed) */}
       <header className="bg-[#0b1f3a] text-white px-6 py-5 shadow-md border-b border-gray-700 rounded-lg">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <h1 className="text-2xl font-extrabold tracking-wide">⚖ AdvocateGO</h1>
@@ -143,11 +146,11 @@ const CaseStatus = () => {
         ))}
       </section>
 
-      {/* Footer */}
+      {/* Footer (This can be removed if App.jsx handles it, but kept here as it's custom) */}
       <footer className="bg-[#0b1f3a] text-gray-300 text-center py-6 text-sm border-t border-gray-700 mt-10 rounded-lg">
-        <p>© 2025 AdvocateGO. Built with ❤ by Devika.</p>
+        <p>© 2025 AdvocateGO.</p>
       </footer>
-    </div>
+    </main>
   );
 };
 

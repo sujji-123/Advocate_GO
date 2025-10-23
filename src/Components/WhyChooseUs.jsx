@@ -1,3 +1,4 @@
+// WhyChooseUs.jsx
 const features = [
   {
     title: "Multilingual Support",

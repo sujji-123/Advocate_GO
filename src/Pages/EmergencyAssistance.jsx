@@ -1,8 +1,8 @@
 // src/Pages/EmergencyAssistance.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import { FaPhone, FaShieldAlt, FaAmbulance, FaUserMd, FaBalanceScale } from 'react-icons/fa';
 
 const EmergencyAssistance = () => {
@@ -59,8 +59,9 @@ const EmergencyAssistance = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
-            <Navbar />
+        // Removed outer div and Navbar
+        // <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
+        //     <Navbar />
             <main className="py-8">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
@@ -120,8 +121,8 @@ const EmergencyAssistance = () => {
                     </div>
 
                     <div className="text-center mt-8">
-                        <Link 
-                            to="/dashboard/client" 
+                        <Link
+                            to="/dashboard" // Changed to generic dashboard link, Dashboard.jsx will redirect
                             className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors font-semibold"
                         >
                             Back to Dashboard
@@ -129,8 +130,8 @@ const EmergencyAssistance = () => {
                     </div>
                 </div>
             </main>
-            <Footer />
-        </div>
+            // Removed Footer
+        // </div>
     );
 };
 

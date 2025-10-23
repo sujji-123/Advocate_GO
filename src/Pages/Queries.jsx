@@ -1,13 +1,14 @@
 // src/Pages/Queries.jsx
 import React from 'react';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import { FaComments } from 'react-icons/fa';
 
 const Queries = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
+    // Removed outer div and Navbar
+    // <div className="flex flex-col min-h-screen bg-gray-50">
+    //  <Navbar />
       <main className="flex-1 py-12 flex items-center justify-center">
         <div className="max-w-md mx-auto p-8 text-center bg-white rounded-lg shadow border border-gray-200">
           <FaComments className="mx-auto h-16 w-16 text-orange-500 mb-6" />
@@ -23,8 +24,8 @@ const Queries = () => {
            </button>
         </div>
       </main>
-      <Footer />
-    </div>
+      // Removed Footer
+    // </div>
   );
 };
 

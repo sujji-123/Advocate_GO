@@ -1,8 +1,8 @@
 // src/Pages/MyProposals.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// Removed Navbar import
+// Removed Footer import
 import { Link } from 'react-router-dom';
 import { FaPaperPlane, FaSpinner, FaExclamationTriangle, FaCheck, FaTimes, FaClock } from 'react-icons/fa';
 
@@ -31,7 +31,7 @@ const MyProposals = () => {
 
         apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         const response = await apiClient.get('/api/proposals/sent');
-        
+
         console.log("Sent proposals:", response.data);
         setProposals(response.data);
       } catch (err) {
@@ -89,8 +89,9 @@ const MyProposals = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <Navbar />
+    // Removed outer div and Navbar
+    // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    //   <Navbar />
       <main className="flex-1 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -144,7 +145,7 @@ const MyProposals = () => {
           <div className="space-y-6">
             {proposals.map(proposal => {
               const statusConfig = getStatusConfig(proposal.status);
-              
+
               return (
                 <div key={proposal.id || proposal._id} className="bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
                   <div className="p-6">
@@ -217,8 +218,8 @@ const MyProposals = () => {
           )}
         </div>
       </main>
-      <Footer />
-    </div>
+      // Removed Footer
+    // </div>
   );
 };
 
