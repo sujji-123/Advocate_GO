@@ -1,3 +1,4 @@
+// src/Components/ProfileCarousel.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,8 +19,35 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
   };
 
   // Function to generate empty profile placeholder based on gender
-  const getEmptyProfileImage = (gender, name) => {
-    const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
+  const getEmptyProfileImage = (profile) => {
+    const initials = profile.name.split(' ').map(word => word[0]).join('').toUpperCase();
+    
+    // Auto-detect gender from name if not provided
+    let gender = profile.gender;
+    if (!gender) {
+      const nameLower = profile.name.toLowerCase();
+      if (nameLower.includes('adv.') || nameLower.includes('prof.') || nameLower.includes('dr.')) {
+        // For professionals, check name patterns
+        const firstName = profile.name.split(' ')[1] || '';
+        if (firstName.toLowerCase().endsWith('a') || nameLower.includes('female') || 
+            nameLower.includes('priya') || nameLower.includes('meera') || nameLower.includes('sunita') ||
+            nameLower.includes('ananya') || nameLower.includes('neha') || nameLower.includes('sanya')) {
+          gender = 'female';
+        } else {
+          gender = 'male';
+        }
+      } else {
+        // For students, check common female name patterns
+        const firstName = profile.name.split(' ')[0] || '';
+        if (firstName.toLowerCase().endsWith('a') || 
+            ['priya', 'meera', 'sunita', 'ananya', 'neha', 'sanya'].some(name => 
+              firstName.toLowerCase().includes(name))) {
+          gender = 'female';
+        } else {
+          gender = 'male';
+        }
+      }
+    }
     
     if (gender === 'female') {
       return (
@@ -56,7 +84,7 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
               {profiles.map((profile) => (
                 <div key={profile.id} className="w-full sm:w-1/2 md:w-1/4 px-4 flex-shrink-0 mb-4">
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition h-full">
-                    {getEmptyProfileImage(profile.gender, profile.name)}
+                    {getEmptyProfileImage(profile)}
                     <div className="p-6">
                       <h3 className="text-xl font-semibold text-gray-800">{profile.name}</h3>
                       <p className="text-gray-600 text-sm mt-1">{profile.specialty}</p>
@@ -75,7 +103,7 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
                       </div>
                       <Link 
                         to={`/${profileType}/${profile.id}`}
-                        className="inline-block mt-4 text-blue-600 font-medium text-sm"
+                        className="inline-block mt-4 text-blue-600 font-medium text-sm hover:text-blue-800 transition"
                       >
                         View Profile →
                       </Link>
@@ -89,7 +117,7 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
           {currentIndex > 0 && (
             <button 
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -100,7 +128,7 @@ const ProfileCarousel = ({ title, profiles, profileType }) => {
           {currentIndex < profiles.length - itemsPerPage && (
             <button 
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
+              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

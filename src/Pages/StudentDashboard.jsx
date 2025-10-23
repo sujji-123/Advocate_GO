@@ -1,17 +1,17 @@
 // src/Pages/StudentDashboard.jsx
 import React from 'react';
 import { useAuth } from '../contextprovider/AuthContext';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// --- MODIFICATION START ---
+// Removed Navbar and Footer imports
+// import Navbar from '../Components/Navbar';
+// import Footer from '../Components/Footer';
+// --- MODIFICATION END ---
 import { Link } from 'react-router-dom';
-import { FaUserTie, FaGraduationCap, FaUsers, FaBook, FaUniversity, FaLink } from 'react-icons/fa'; // Added FaLink
+import { FaUserTie, FaGraduationCap, FaUsers, FaBook, FaUniversity, FaLink } from 'react-icons/fa';
 
 const StudentDashboard = () => {
     const { user, logout } = useAuth();
-     // --- Simulate empty state (e.g., no connections yet) ---
-     // In a real app, you might fetch connection count or check local state
      const hasConnections = false; // Simulate no connections
-     // --- End simulation ---
 
     const features = [
         {
@@ -31,7 +31,7 @@ const StudentDashboard = () => {
         {
             title: "My Connections",
             description: "Manage your network",
-            icon: <FaGraduationCap className="text-2xl" />, // Changed Icon
+            icon: <FaGraduationCap className="text-2xl" />,
             path: "/connections",
             color: "from-purple-500 to-pink-500"
         },
@@ -45,9 +45,12 @@ const StudentDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
-            <Navbar />
+        // --- MODIFICATION START ---
+        // Removed outer div and Navbar/Footer components
+        // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+        //     <Navbar />
             <main className="py-8">
+        {/* --- MODIFICATION END --- */}
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-12">
@@ -92,7 +95,7 @@ const StudentDashboard = () => {
                         ))}
                     </div>
 
-                     {/* --- MODIFICATION START: Empty State for Connections --- */}
+                     {/* Empty State for Connections */}
                      {!hasConnections && (
                         <div className="text-center bg-white p-8 rounded-lg shadow border border-gray-200 mb-8">
                             <FaLink className="mx-auto h-12 w-12 text-gray-400" />
@@ -114,10 +117,9 @@ const StudentDashboard = () => {
                             </div>
                         </div>
                      )}
-                     {/* --- MODIFICATION END --- */}
 
                     {/* Career Development */}
-                    <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 text-white text-center mb-8"> {/* Added mb-8 */}
+                    <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 text-white text-center mb-8">
                         <h3 className="text-xl font-semibold mb-2">Start Your Legal Journey</h3>
                         <p className="opacity-90 mb-4">Access internships, resources, and career guidance</p>
                         <Link
@@ -136,8 +138,11 @@ const StudentDashboard = () => {
                     </button>
                 </div>
             </main>
-            <Footer />
-        </div>
+        // --- MODIFICATION START ---
+        // Removed Footer component
+        //     <Footer />
+        // </div>
+        // --- MODIFICATION END ---
     );
 };
 

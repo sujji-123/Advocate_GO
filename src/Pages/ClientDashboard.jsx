@@ -2,8 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contextprovider/AuthContext';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// --- MODIFICATION START ---
+// Removed Navbar and Footer imports
+// import Navbar from '../Components/Navbar';
+// import Footer from '../Components/Footer';
+// --- MODIFICATION END ---
 import { FaSearch, FaFileAlt, FaUsers, FaChartLine, FaBalanceScale } from 'react-icons/fa';
 
 const ClientDashboard = () => {
@@ -41,9 +44,13 @@ const ClientDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-            <Navbar />
+        // --- MODIFICATION START ---
+        // Removed outer div and Navbar/Footer components
+        // The main layout is now handled by App.jsx
+        // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        //     <Navbar />
             <main className="py-8">
+        {/* --- MODIFICATION END --- */}
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-12">
@@ -91,7 +98,7 @@ const ClientDashboard = () => {
                     <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white text-center">
                         <h3 className="text-xl font-semibold mb-2">Need Immediate Help?</h3>
                         <p className="opacity-90 mb-4">Get quick legal guidance for urgent matters</p>
-                        <Link 
+                        <Link
                             to="/emergency-assistance"
                             className="inline-block bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                         >
@@ -107,8 +114,11 @@ const ClientDashboard = () => {
                     </button>
                 </div>
             </main>
-            <Footer />
-        </div>
+        // --- MODIFICATION START ---
+        // Removed Footer component
+        //    <Footer />
+        // </div>
+        // --- MODIFICATION END ---
     );
 };
 

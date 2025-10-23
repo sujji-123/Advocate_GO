@@ -1,11 +1,12 @@
 // src/App.jsx
+import React, { useState } from 'react'; // Import useState
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contextprovider/AuthContext';
 
 // Core Pages
 import Home from './Pages/Home';
 import Signup from './Pages/Signup';
-import DummySignup from './Pages/DummySignup'; 
+import DummySignup from './Pages/DummySignup';
 import AuthPage from './Pages/AuthPage';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
@@ -30,12 +31,9 @@ import MyConnections from './Pages/MyConnections';
 import MyProposals from './Pages/MyProposals';
 import ChatPage from './Pages/ChatPage';
 
-// --- MODIFICATION START ---
 // Import the new components
-import ProposalInbox from './Pages/ProposalInbox'; 
-import Queries from './Pages/Queries';         
-// --- MODIFICATION END ---
-
+import ProposalInbox from './Pages/ProposalInbox';
+import Queries from './Pages/Queries';
 
 // New Pages
 import FAQsPage from './Pages/FAQs';
@@ -44,7 +42,7 @@ import ProfilePage from './Pages/Profile';
 import AccountSettingsPage from './Pages/AccountSettings';
 import NotificationsPage from './Pages/Notifications';
 
-// Friend's New Pages
+// Friend's New Public Pages
 import LegalSelfDiagnosis from './Pages/LegalSelfDiagnosis';
 import LawCollegesIndia from './Pages/LawCollegesIndia';
 import NearbyLawyerFinder from './Pages/NearbyLawyerFinder';
@@ -56,14 +54,26 @@ import LegalResources from './Pages/LegalResources';
 import CareerOpportunities from './Pages/CareerOpportunities';
 import CommunityImpact from './Pages/CommunityImpact';
 
+// --- ADD NEW PAGES ---
+import ProfileDetail from './Pages/ProfileDetail';
+import CategoryDetail from './Pages/CategoryDetail';
+import RightsPage from './Pages/RightsPage';
+
+// --- MODIFICATION START ---
+// Import Navbar and Footer
+import Navbar from './Components/Navbar';
+import Footer from './Components/Footer';
+// --- MODIFICATION END ---
+
+
 // Placeholder for missing pages (Kept for routes not implemented yet)
 const ComingSoon = ({ title }) => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20"> {/* Added padding top */}
     <div className="text-center p-6">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
       <p className="text-gray-600">This feature is under development and coming soon.</p>
        <button
-            onClick={() => window.history.back()} 
+            onClick={() => window.history.back()}
             className="mt-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
             Go Back
@@ -75,95 +85,111 @@ const ComingSoon = ({ title }) => (
 function App() {
   const { user } = useAuth();
   const allRoles = ['client', 'lawyer', 'student', 'advisor'];
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   return (
     <BrowserRouter>
-      <Routes>
-        {/* --- Public Routes --- */}
-        <Route path="/" element={<Home />} />
-        <Route path="/more" element={<More />} />
-        <Route path="/top-law-colleges" element={<TopLawCollegesPage />} />
-        <Route path="/lawyer-type-advisor" element={<LawyerTypeAdvisorPage />} />
-        <Route path="/lawyer-locator" element={<LawyerLocator />} />
-        <Route path="/faqs" element={<FAQsPage />} />
-        <Route path="/legal-aid" element={<LegalAidPage />} />
-        
-        {/* Friend's New Public Routes */}
-        <Route path="/legal-self-diagnosis" element={<LegalSelfDiagnosis />} />
-        <Route path="/law-colleges-india" element={<LawCollegesIndia />} />
-        <Route path="/nearby-lawyer-finder" element={<NearbyLawyerFinder />} />
-        <Route path="/case-timeline-viewer" element={<CaseTimelineViewer />} />
+      {/* --- MODIFICATION START: Persistent Layout --- */}
+      <div className="flex flex-col min-h-screen">
+        <Navbar setQuery={setSearchQuery} /> {/* Pass setter to Navbar */}
+        <main className="flex-grow"> {/* Make main content grow */}
+          <Routes>
+      {/* --- MODIFICATION END --- */}
 
-        {/* New Functional Public Routes */}
-        <Route path="/emergency-assistance" element={<EmergencyAssistance />} />
-        <Route path="/legal-resources" element={<LegalResources />} />
-        <Route path="/career-opportunities" element={<CareerOpportunities />} />
-        <Route path="/community-impact" element={<CommunityImpact />} />
+            {/* --- Public Routes --- */}
+            {/* Pass searchQuery to pages that need it, e.g., Home */}
+            <Route path="/" element={<Home searchQuery={searchQuery} />} />
+            <Route path="/more" element={<More />} />
+            <Route path="/top-law-colleges" element={<TopLawCollegesPage />} />
+            <Route path="/lawyer-type-advisor" element={<LawyerTypeAdvisorPage />} />
+            <Route path="/lawyer-locator" element={<LawyerLocator />} />
+            <Route path="/faqs" element={<FAQsPage />} />
+            <Route path="/legal-aid" element={<LegalAidPage />} />
+            <Route path="/rights" element={<RightsPage />} />
 
-        {/* --- Auth Routes --- */}
-        <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/demo-signup" element={!user ? <DummySignup /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
+            {/* --- ADDED: Profile and Category Routes --- */}
+            <Route path="/:profileType/:id" element={<ProfileDetail />} />
+            <Route path="/category/:id" element={<CategoryDetail />} />
 
-        {/* --- Dashboard Redirector --- */}
-        <Route 
-          path="/dashboard" 
-          element={
-            user ? <Dashboard /> : <Navigate to="/login" replace state={{ from: '/dashboard' }} />
-          } 
-        />
+            {/* Friend's New Public Routes */}
+            <Route path="/legal-self-diagnosis" element={<LegalSelfDiagnosis />} />
+            <Route path="/law-colleges-india" element={<LawCollegesIndia />} />
+            <Route path="/nearby-lawyer-finder" element={<NearbyLawyerFinder />} />
+            <Route path="/case-timeline-viewer" element={<CaseTimelineViewer />} />
 
-        {/* --- Role-Specific Dashboards & Protected Routes --- */}
-        {/* Client Routes */}
-        <Route element={<ProtectedRoute allowedRoles={['client']} />}>
-          <Route path="/dashboard/client" element={<ClientDashboard />} />
-          <Route path="/proposals/sent" element={<MyProposals />} /> 
-          <Route path="/case-status" element={<CaseStatus />} /> 
-          {/* Note: /case-timeline-viewer is public, might want a protected version too */}
-        </Route>
-        
-        {/* Lawyer Routes */}
-        <Route element={<ProtectedRoute allowedRoles={['lawyer']} />}>
-          <Route path="/dashboard/lawyer" element={<LawyerDashboard />} />
-          {/* --- MODIFICATION START --- */}
-          <Route path="/proposals/inbox" element={<ProposalInbox />} /> 
-          {/* --- MODIFICATION END --- */}
-           {/* Add other lawyer specific routes here */}
-        </Route>
-        
-        {/* Student Routes */}
-        <Route element={<ProtectedRoute allowedRoles={['student']} />}>
-          <Route path="/dashboard/student" element={<StudentDashboard />} />
-          {/* Add other student specific routes here, e.g., viewing internships */}
-           <Route path="/career-opportunities" element={<CareerOpportunities />} />
-        </Route>
-        
-        {/* Advisor Routes */}
-        <Route element={<ProtectedRoute allowedRoles={['advisor']} />}>
-          <Route path="/dashboard/advisor" element={<AdvisorDashboard />} />
-           {/* --- MODIFICATION START --- */}
-          <Route path="/queries" element={<Queries />} /> 
-           {/* --- MODIFICATION END --- */}
-          <Route path="/community-impact" element={<CommunityImpact />} />
-        </Route>
+            {/* New Functional Public Routes */}
+            <Route path="/emergency-assistance" element={<EmergencyAssistance />} />
+            <Route path="/legal-resources" element={<LegalResources />} />
+            <Route path="/career-opportunities" element={<CareerOpportunities />} />
+            <Route path="/community-impact" element={<CommunityImpact />} />
 
-        {/* --- Protected Routes (Accessible by All Authenticated Roles) --- */}
-        <Route element={<ProtectedRoute allowedRoles={allRoles} />}>
-          <Route path="/users/:role" element={<UserDirectory />} /> 
-          <Route path="/connections" element={<MyConnections />} />
-          <Route path="/chat/:otherUserId" element={<ChatPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<AccountSettingsPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/legal-docs" element={<LegalDocuments />} /> 
-           {/* Add other shared protected routes here */}
-        </Route>
+            {/* --- Auth Routes --- */}
+            <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
+            <Route path="/register" element={!user ? <Signup /> : <Navigate to="/dashboard" replace />} />
+            <Route path="/demo-signup" element={!user ? <DummySignup /> : <Navigate to="/dashboard" replace />} />
+            <Route path="/forgot-password" element={!user ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
+            <Route path="/reset-password/:token" element={!user ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
 
-        {/* --- Fallback Route --- */}
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
-      </Routes>
+            {/* --- Dashboard Redirector --- */}
+            <Route
+              path="/dashboard"
+              element={
+                user ? <Dashboard /> : <Navigate to="/login" replace state={{ from: '/dashboard' }} />
+              }
+            />
+
+            {/* --- Role-Specific Dashboards & Protected Routes --- */}
+            {/* Client Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['client']} />}>
+              <Route path="/dashboard/client" element={<ClientDashboard />} />
+              <Route path="/proposals/sent" element={<MyProposals />} />
+              {/* Added /my-cases for client */}
+              <Route path="/my-cases" element={<ComingSoon title="My Cases" />} />
+              <Route path="/case-status" element={<CaseStatus />} />
+            </Route>
+
+            {/* Lawyer Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['lawyer']} />}>
+              <Route path="/dashboard/lawyer" element={<LawyerDashboard />} />
+              <Route path="/proposals/inbox" element={<ProposalInbox />} />
+            </Route>
+
+            {/* Student Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['student']} />}>
+              <Route path="/dashboard/student" element={<StudentDashboard />} />
+              {/* Note: Career Opps is public, maybe keep a protected version too? */}
+              {/* <Route path="/career-opportunities" element={<CareerOpportunities />} /> */}
+            </Route>
+
+            {/* Advisor Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['advisor']} />}>
+              <Route path="/dashboard/advisor" element={<AdvisorDashboard />} />
+              <Route path="/queries" element={<Queries />} />
+              {/* Note: Community Impact is public */}
+              {/* <Route path="/community-impact" element={<CommunityImpact />} /> */}
+            </Route>
+
+            {/* --- Protected Routes (Accessible by All Authenticated Roles) --- */}
+            <Route element={<ProtectedRoute allowedRoles={allRoles} />}>
+              <Route path="/users/:role" element={<UserDirectory />} />
+              <Route path="/connections" element={<MyConnections />} />
+              <Route path="/chat/:otherUserId" element={<ChatPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/settings" element={<AccountSettingsPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/legal-docs" element={<LegalDocuments />} />
+               {/* Add other shared protected routes here */}
+            </Route>
+
+            {/* --- Fallback Route --- */}
+            <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
+
+      {/* --- MODIFICATION START: Persistent Layout --- */}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+      {/* --- MODIFICATION END --- */}
     </BrowserRouter>
   );
 }

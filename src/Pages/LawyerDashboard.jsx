@@ -1,28 +1,26 @@
 // src/Pages/LawyerDashboard.jsx
-import React, { useState, useEffect } from 'react'; // Added useState, useEffect
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contextprovider/AuthContext';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+// --- MODIFICATION START ---
+// Removed Navbar and Footer imports
+// import Navbar from '../Components/Navbar';
+// import Footer from '../Components/Footer';
+// --- MODIFICATION END ---
 import { Link } from 'react-router-dom';
-import { FaFileAlt, FaUsers, FaGraduationCap, FaUserTie, FaBriefcase, FaSpinner, FaInbox } from 'react-icons/fa'; // Added Icons
-// Removed axios import as we are simulating data for now
+import { FaFileAlt, FaUsers, FaGraduationCap, FaUserTie, FaBriefcase, FaSpinner, FaInbox } from 'react-icons/fa';
 
 const LawyerDashboard = () => {
     const { user, logout } = useAuth();
-    // --- Simulate fetching proposals ---
     const [pendingProposalsCount, setPendingProposalsCount] = useState(0);
     const [isLoadingProposals, setIsLoadingProposals] = useState(true);
 
     useEffect(() => {
-        // Simulate API call to get proposal count
         setIsLoadingProposals(true);
         setTimeout(() => {
-             // In a real app, fetch from '/api/proposals/inbox' and count pending ones
-            setPendingProposalsCount(0); // Simulate no pending proposals
+            setPendingProposalsCount(0);
             setIsLoadingProposals(false);
         }, 1500);
     }, []);
-    // --- End simulation ---
 
 
     const features = [
@@ -32,8 +30,6 @@ const LawyerDashboard = () => {
             icon: <FaFileAlt className="text-2xl" />,
             path: "/proposals/inbox",
             color: "from-blue-500 to-cyan-500",
-             // Add count dynamically if needed later
-            // count: pendingProposalsCount > 0 ? pendingProposalsCount : null
         },
         {
             title: "My Connections",
@@ -59,9 +55,12 @@ const LawyerDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
-            <Navbar />
+        // --- MODIFICATION START ---
+        // Removed outer div and Navbar/Footer components
+        // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
+        //     <Navbar />
             <main className="py-8">
+        {/* --- MODIFICATION END --- */}
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-12">
@@ -91,7 +90,7 @@ const LawyerDashboard = () => {
                             <Link
                                 key={index}
                                 to={feature.path}
-                                className="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative" // Added relative
+                                className="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative"
                             >
                                 <div className={`p-1 rounded-2xl bg-gradient-to-r ${feature.color}`}>
                                     <div className="bg-white rounded-xl p-6">
@@ -102,7 +101,6 @@ const LawyerDashboard = () => {
                                             <div className="flex-1">
                                                 <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
                                                     {feature.title}
-                                                    {/* Display count for proposals */}
                                                     {feature.title === "Case Proposals" && !isLoadingProposals && pendingProposalsCount > 0 && (
                                                          <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                             {pendingProposalsCount} New
@@ -117,12 +115,11 @@ const LawyerDashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-
                             </Link>
                         ))}
                     </div>
 
-                     {/* --- MODIFICATION START: Empty State for Proposals --- */}
+                    {/* Empty State for Proposals */}
                      {!isLoadingProposals && pendingProposalsCount === 0 && (
                         <div className="text-center bg-white p-8 rounded-lg shadow border border-gray-200 mb-8">
                             <FaInbox className="mx-auto h-12 w-12 text-gray-400" />
@@ -144,11 +141,9 @@ const LawyerDashboard = () => {
                             </div>
                         </div>
                      )}
-                     {/* --- MODIFICATION END --- */}
-
 
                     {/* Professional Growth */}
-                    <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl p-6 text-white text-center mb-8"> {/* Added mb-8 */}
+                    <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl p-6 text-white text-center mb-8">
                         <h3 className="text-xl font-semibold mb-2">Continue Your Legal Education</h3>
                         <p className="opacity-90 mb-4">Access latest legal updates and resources</p>
                         <Link
@@ -167,8 +162,11 @@ const LawyerDashboard = () => {
                     </button>
                 </div>
             </main>
-            <Footer />
-        </div>
+        // --- MODIFICATION START ---
+        // Removed Footer component
+        //     <Footer />
+        // </div>
+        // --- MODIFICATION END ---
     );
 };
 

@@ -1,3 +1,4 @@
+// src/Pages/Home.jsx
 import HeroSection from '../Components/HeroSection';
 import CategoryCarousel from '../Components/CategoryCarousel';
 import WhyChooseUs from '../Components/WhyChooseUs';
@@ -5,11 +6,10 @@ import ProfileCarousel from '../Components/ProfileCarousel';
 import FAQSection from '../Components/FAQSection';
 import LocationTracker from '../Components/LocationTracker';
 import Testimonials from '../Components/Testimonials';
-import Footer from '../Components/Footer';
-import Navbar from '../Components/Navbar';
-import { Link } from 'react-router-dom'; // ADD THIS IMPORT
+import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react'; // Import useEffect
 
-// Using random user API for profile images
+// Using random user API for profile images with gender information
 const lawyers = [
   {
     id: 1,
@@ -18,6 +18,7 @@ const lawyers = [
     rating: 5,
     reviews: 128,
     image: "https://randomuser.me/api/portraits/women/65.jpg",
+    gender: "female",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const lawyers = [
     rating: 5,
     reviews: 96,
     image: "https://randomuser.me/api/portraits/men/75.jpg",
+    gender: "male",
   },
   {
     id: 3,
@@ -34,6 +36,7 @@ const lawyers = [
     rating: 4,
     reviews: 87,
     image: "https://randomuser.me/api/portraits/women/44.jpg",
+    gender: "female",
   },
   {
     id: 4,
@@ -42,6 +45,7 @@ const lawyers = [
     rating: 4,
     reviews: 72,
     image: "https://randomuser.me/api/portraits/men/68.jpg",
+    gender: "male",
   },
   {
     id: 5,
@@ -50,6 +54,7 @@ const lawyers = [
     rating: 4,
     reviews: 65,
     image: "https://randomuser.me/api/portraits/women/33.jpg",
+    gender: "female",
   },
 ];
 
@@ -61,6 +66,7 @@ const students = [
     rating: 5,
     reviews: 42,
     image: "https://randomuser.me/api/portraits/women/22.jpg",
+    gender: "female",
   },
   {
     id: 2,
@@ -69,6 +75,7 @@ const students = [
     rating: 5,
     reviews: 38,
     image: "https://randomuser.me/api/portraits/men/32.jpg",
+    gender: "male",
   },
   {
     id: 3,
@@ -77,6 +84,7 @@ const students = [
     rating: 4,
     reviews: 31,
     image: "https://randomuser.me/api/portraits/women/55.jpg",
+    gender: "female",
   },
   {
     id: 4,
@@ -85,6 +93,7 @@ const students = [
     rating: 4,
     reviews: 27,
     image: "https://randomuser.me/api/portraits/men/45.jpg",
+    gender: "male",
   },
   {
     id: 5,
@@ -93,6 +102,7 @@ const students = [
     rating: 4,
     reviews: 23,
     image: "https://randomuser.me/api/portraits/women/77.jpg",
+    gender: "female",
   },
 ];
 
@@ -104,6 +114,7 @@ const advisors = [
     rating: 5,
     reviews: 56,
     image: "https://randomuser.me/api/portraits/men/60.jpg",
+    gender: "male",
   },
   {
     id: 2,
@@ -112,6 +123,7 @@ const advisors = [
     rating: 5,
     reviews: 48,
     image: "https://randomuser.me/api/portraits/women/50.jpg",
+    gender: "female",
   },
   {
     id: 3,
@@ -120,6 +132,7 @@ const advisors = [
     rating: 5,
     reviews: 39,
     image: "https://randomuser.me/api/portraits/men/70.jpg",
+    gender: "male",
   },
   {
     id: 4,
@@ -128,6 +141,7 @@ const advisors = [
     rating: 4,
     reviews: 34,
     image: "https://randomuser.me/api/portraits/women/40.jpg",
+    gender: "female",
   },
   {
     id: 5,
@@ -136,23 +150,42 @@ const advisors = [
     rating: 4,
     reviews: 29,
     image: "https://randomuser.me/api/portraits/men/50.jpg",
+    gender: "male",
   },
 ];
 
-const Home = () => {
+
+// --- MODIFICATION: Accept searchQuery prop ---
+const Home = ({ searchQuery }) => {
+
+  // --- EXAMPLE: How to use searchQuery ---
+  useEffect(() => {
+    if (searchQuery) {
+      console.log("Search Query in Home:", searchQuery);
+      // Add filtering logic here based on searchQuery
+    }
+  }, [searchQuery]);
+  // --- END EXAMPLE ---
+
+
+  // --- APPLY FILTERS HERE before rendering carousels ---
+  const filteredLawyers = lawyers.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredStudents = students.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredAdvisors = advisors.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
+
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div>
       <HeroSection />
-      
-      {/* --- ADDED: Demo Account Section --- */}
+
+      {/* Demo Account Section */}
       <section className="text-center py-8 md:py-12 bg-gradient-to-r from-teal-50 to-cyan-50 border-b border-t border-teal-200">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
             Want to Explore AdvocateGO?
           </h2>
           <p className="text-gray-600 text-base md:text-lg mb-6">
-            Create a demo account instantly to experience all features without email verification. 
+            Create a demo account instantly to experience all features without email verification.
             Perfect for testing and demonstration purposes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -174,29 +207,38 @@ const Home = () => {
           </p>
         </div>
       </section>
-      {/* --- END ADDED SECTION --- */}
 
-      <CategoryCarousel />
-      <WhyChooseUs />
-      <ProfileCarousel 
-        title="Meet Our Top Lawyers"
-        profiles={lawyers}
-        profileType="lawyers"
-      />
-      <ProfileCarousel 
-        title="Connect with Law Students"
-        profiles={students}
-        profileType="students"
-      />
-      <ProfileCarousel 
-        title="Our Expert Advisors"
-        profiles={advisors}
-        profileType="advisors"
-      />
-      <FAQSection />
-      <LocationTracker />
-      <Testimonials />
-      <Footer />
+      {/* --- RENDER FILTERED RESULTS or show message if no results --- */}
+      { (filteredLawyers.length > 0 || filteredStudents.length > 0 || filteredAdvisors.length > 0 || !searchQuery) ? (
+        <>
+            <CategoryCarousel />
+            <WhyChooseUs />
+            {filteredLawyers.length > 0 && <ProfileCarousel
+                title="Meet Our Top Lawyers"
+                profiles={filteredLawyers} // Use filtered data
+                profileType="lawyers"
+            />}
+             {filteredStudents.length > 0 && <ProfileCarousel
+                title="Connect with Law Students"
+                profiles={filteredStudents} // Use filtered data
+                profileType="students"
+            />}
+            {filteredAdvisors.length > 0 && <ProfileCarousel
+                title="Our Expert Advisors"
+                profiles={filteredAdvisors} // Use filtered data
+                profileType="advisors"
+            />}
+            <FAQSection />
+            <LocationTracker />
+            <Testimonials />
+        </>
+      ) : (
+          <div className="text-center py-16 px-6">
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4">No Results Found</h2>
+              <p className="text-gray-500">Your search for "{searchQuery}" did not match any profiles.</p>
+          </div>
+      )}
+      {/* --- END FILTERED RESULTS --- */}
     </div>
   );
 };
