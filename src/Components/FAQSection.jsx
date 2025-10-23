@@ -34,28 +34,43 @@ const FAQSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the question to your backend
     alert(`Question submitted: ${question}`);
     setQuestion('');
   };
 
   return (
-    <section className="py-12 px-6 bg-white">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Frequently Asked Questions
-        </h2>
+    <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-slate-100 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200 rounded-full opacity-20"></div>
+      <div className="absolute bottom-10 right-10 w-48 h-48 bg-purple-200 rounded-full opacity-20"></div>
+      
+      <div className="max-w-4xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Questions</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Find quick answers to common questions about our legal services
+          </p>
+        </div>
         
-        <div className="space-y-4 mb-8">
+        <div className="space-y-4 mb-12">
           {faqs.map((faq, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+            <div 
+              key={index} 
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+            >
               <button
-                className="w-full flex justify-between items-center p-4 text-left hover:bg-gray-50 transition"
+                className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors duration-200 group"
                 onClick={() => toggleFAQ(index)}
               >
-                <span className="font-medium text-gray-800">{faq.question}</span>
+                <span className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                  {faq.question}
+                </span>
                 <svg 
-                  className={`h-5 w-5 text-gray-500 transform transition ${activeIndex === index ? 'rotate-180' : ''}`}
+                  className={`h-6 w-6 text-gray-400 transform transition-all duration-300 group-hover:text-blue-600 ${
+                    activeIndex === index ? 'rotate-180 text-blue-600' : ''
+                  }`}
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -64,7 +79,7 @@ const FAQSection = () => {
                 </svg>
               </button>
               {activeIndex === index && (
-                <div className="p-4 pt-0 text-gray-600">
+                <div className="px-6 pb-6 text-gray-600 leading-relaxed animate-fadeIn">
                   {faq.answer}
                 </div>
               )}
@@ -72,20 +87,23 @@ const FAQSection = () => {
           ))}
         </div>
         
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Have another question?</h3>
-          <form onSubmit={handleSubmit}>
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl p-8 text-white shadow-2xl">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold mb-2">Still have questions?</h3>
+            <p className="text-blue-100 opacity-90">We're here to help you get the answers you need</p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Type your question here..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-6 py-4 border-0 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-blue-200 resize-none"
               rows="3"
               required
             />
             <button
               type="submit"
-              className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="w-full bg-white text-blue-600 px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Submit Question
             </button>

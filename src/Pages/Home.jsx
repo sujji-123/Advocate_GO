@@ -7,7 +7,7 @@ import FAQSection from '../Components/FAQSection';
 import LocationTracker from '../Components/LocationTracker';
 import Testimonials from '../Components/Testimonials';
 import { Link } from 'react-router-dom';
-import React, { useEffect } from 'react'; // Import useEffect
+import React, { useEffect } from 'react';
 
 // Using random user API for profile images with gender information
 const lawyers = [
@@ -154,91 +154,142 @@ const advisors = [
   },
 ];
 
-
-// --- MODIFICATION: Accept searchQuery prop ---
 const Home = ({ searchQuery }) => {
-
-  // --- EXAMPLE: How to use searchQuery ---
   useEffect(() => {
     if (searchQuery) {
       console.log("Search Query in Home:", searchQuery);
-      // Add filtering logic here based on searchQuery
     }
   }, [searchQuery]);
-  // --- END EXAMPLE ---
 
-
-  // --- APPLY FILTERS HERE before rendering carousels ---
   const filteredLawyers = lawyers.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
   const filteredStudents = students.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
   const filteredAdvisors = advisors.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specialty.toLowerCase().includes(searchQuery.toLowerCase()));
 
-
   return (
-    <div>
+    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50">
       <HeroSection />
 
-      {/* Demo Account Section */}
-      <section className="text-center py-8 md:py-12 bg-gradient-to-r from-teal-50 to-cyan-50 border-b border-t border-teal-200">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-            Want to Explore AdvocateGO?
+      {/* Demo Account Section - Enhanced Styling */}
+      <section className="relative py-16 md:py-20 bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="relative max-w-6xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full backdrop-blur-sm mb-6">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+            Ready to Explore <span className="text-yellow-300">AdvocateGO</span>?
           </h2>
-          <p className="text-gray-600 text-base md:text-lg mb-6">
-            Create a demo account instantly to experience all features without email verification.
-            Perfect for testing and demonstration purposes.
+          
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Experience comprehensive legal assistance with our instant demo account. 
+            No email verification required - perfect for testing and exploration.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <Link
               to="/demo-signup"
-              className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-200 ease-in-out font-semibold text-sm md:text-base transform hover:scale-105"
+              className="group bg-white text-teal-600 px-8 py-4 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 font-bold text-lg transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center min-w-[200px]"
             >
-              Create Demo Account
+              <span>Create Demo Account</span>
+              <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
             </Link>
+            
             <Link
               to="/register"
-              className="border border-teal-500 text-teal-600 px-6 py-3 rounded-lg hover:bg-teal-50 transition duration-200 ease-in-out font-medium text-sm md:text-base"
+              className="group border-2 border-white text-white px-8 py-4 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 font-semibold text-lg transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center min-w-[200px]"
             >
-              Regular Sign Up
+              <span>Regular Sign Up</span>
+              <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
             </Link>
           </div>
-          <p className="text-xs text-gray-500 mt-4">
-            Demo accounts work with all features but don't require email verification.
+          
+          <p className="text-white/70 text-sm font-medium">
+            💫 Demo accounts include all features without email verification
           </p>
         </div>
       </section>
 
-      {/* --- RENDER FILTERED RESULTS or show message if no results --- */}
-      { (filteredLawyers.length > 0 || filteredStudents.length > 0 || filteredAdvisors.length > 0 || !searchQuery) ? (
-        <>
-            <CategoryCarousel />
-            <WhyChooseUs />
-            {filteredLawyers.length > 0 && <ProfileCarousel
+      {/* Main Content with Enhanced Sections */}
+      {(filteredLawyers.length > 0 || filteredStudents.length > 0 || filteredAdvisors.length > 0 || !searchQuery) ? (
+        <div className="space-y-20 md:space-y-24 py-16 md:py-20">
+          <CategoryCarousel />
+          
+          <WhyChooseUs />
+          
+          {filteredLawyers.length > 0 && (
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-orange-50 transform -skew-y-2 -z-10"></div>
+              <ProfileCarousel
                 title="Meet Our Top Lawyers"
-                profiles={filteredLawyers} // Use filtered data
+                profiles={filteredLawyers}
                 profileType="lawyers"
-            />}
-             {filteredStudents.length > 0 && <ProfileCarousel
+              />
+            </div>
+          )}
+          
+          {filteredStudents.length > 0 && (
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 transform skew-y-2 -z-10"></div>
+              <ProfileCarousel
                 title="Connect with Law Students"
-                profiles={filteredStudents} // Use filtered data
+                profiles={filteredStudents}
                 profileType="students"
-            />}
-            {filteredAdvisors.length > 0 && <ProfileCarousel
+              />
+            </div>
+          )}
+          
+          {filteredAdvisors.length > 0 && (
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-emerald-50 transform -skew-y-2 -z-10"></div>
+              <ProfileCarousel
                 title="Our Expert Advisors"
-                profiles={filteredAdvisors} // Use filtered data
+                profiles={filteredAdvisors}
                 profileType="advisors"
-            />}
-            <FAQSection />
-            <LocationTracker />
-            <Testimonials />
-        </>
+              />
+            </div>
+          )}
+          
+          <FAQSection />
+          
+          <LocationTracker />
+          
+          <Testimonials />
+        </div>
       ) : (
-          <div className="text-center py-16 px-6">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4">No Results Found</h2>
-              <p className="text-gray-500">Your search for "{searchQuery}" did not match any profiles.</p>
+        <div className="min-h-[50vh] flex items-center justify-center py-20">
+          <div className="text-center max-w-md mx-auto px-6">
+            <div className="w-24 h-24 bg-gradient-to-r from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">No Results Found</h2>
+            <p className="text-gray-600 mb-6">Your search for "<span className="font-semibold text-gray-800">"{searchQuery}"</span>" did not match any profiles.</p>
+            <Link
+              to="/"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Back to Home
+            </Link>
           </div>
+        </div>
       )}
-      {/* --- END FILTERED RESULTS --- */}
     </div>
   );
 };
